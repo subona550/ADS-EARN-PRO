@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ads Earning Mini App</title>
+
+    <!-- Preconnect for Fast Resource Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Google Font: Hind Siliguri & Orbitron -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Adsgram SDK -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #070913;
+            --card-bg: rgba(18, 24, 43, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #00f2fe;
+            --accent-blue: #4facfe;
+            --accent-purple: #7f00ff;
+            --accent-pink: #e100ff;
+            --accent-gold: #ffaa00;
+            --accent-green: #00f5a0;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body { 
+            background-color: var(--bg-primary); 
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 50% 40%, rgba(0, 242, 254, 0.08) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding-bottom: 95px; 
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* 🚀 ১. স্প্ল্যাশ স্ক্রিন */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #030712;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+        }
+
+        .splash-core {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .splash-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--accent-cyan);
+            border-right-color: var(--accent-purple);
+            animation: spinRing 1.2s linear infinite;
+        }
+
+        .splash-ring::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-bottom-color: var(--accent-green);
+            animation: spinRingReverse 2s linear infinite;
+        }
+
+        @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spinRingReverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+
+        .splash-icon {
+            font-size: 40px;
+            filter: drop-shadow(0 0 12px var(--accent-cyan));
+            animation: pulseIcon 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseIcon { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.08); opacity: 1; } }
+
+        .splash-app-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #00f2fe, #a855f7, #00f5a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .splash-status-text { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 16px; font-family: monospace; }
+
+        .splash-progress-track {
+            width: 160px; height: 3.5px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden;
+        }
+
+        .splash-progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00f2fe, #00f5a0); transition: width 0.3s ease; }
+
+        /* 🌈 টাইপোগ্রাফি স্টাইল */
+        .text-gradient {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #00f5a0 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
+        }
+
+        .text-gold {
+            background: linear-gradient(135deg, #ffe066 0%, #f59e0b 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
+        }
+
+        /* 🎨 হেডার */
+        .header { 
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            color: white; padding: 14px 18px; border-radius: 0 0 24px 24px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .header-content { flex-grow: 1; text-align: center; }
+        .header h2 { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; text-shadow: 0 2px 10px rgba(0,242,254,0.3); }
+
+        .lang-switch-btn {
+            background: rgba(0, 242, 254, 0.12); border: 1px solid rgba(0, 242, 254, 0.35);
+            color: #00f2fe; padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 800;
+            cursor: pointer; display: flex; align-items: center; gap: 3px; transition: all 0.2s ease;
+        }
+        .lang-switch-btn:active { transform: scale(0.92); background: var(--accent-cyan); color: #000; }
+
+        .db-status {
+            font-size: 10px; background: rgba(0, 245, 160, 0.12); color: #00f5a0;
+            padding: 2px 8px; border-radius: 16px; display: inline-flex; align-items: center; gap: 3px; margin-top: 2px;
+            border: 1px solid rgba(0, 245, 160, 0.25); font-weight: 700;
+        }
+
+        .container { padding: 16px; max-width: 480px; margin: 0 auto; }
+
+        /* 🌟 গ্লাসমোরফিক কার্ড */
+        .banner-card-style {
+            border-radius: 22px; padding: 20px; margin-bottom: 16px; color: white; position: relative; overflow: hidden;
+            background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35); border: 1px solid var(--card-border);
+        }
+
+        /* 🎨 ১. স্লাইডিং ব্যানার */
+        .banner-container { 
+            position: relative; width: 100%; height: 160px; border-radius: 22px; overflow: hidden; 
+            margin-bottom: 16px; box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .banner-slide { display: none; width: 100%; height: 100%; padding: 20px; box-sizing: border-box; color: white; position: relative; }
+        .banner-slide.active { display: flex; flex-direction: column; justify-content: center; animation: fadeIn 0.4s ease; }
+        
+        .slide-1 { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%); }
+        .slide-1::after { content: "⚡"; position: absolute; right: 10px; bottom: -15px; font-size: 90px; opacity: 0.12; filter: blur(2px); }
+
+        .slide-2 { background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #0f766e 100%); }
+        .slide-2::after { content: "📲"; position: absolute; right: 10px; bottom: -15px; font-size: 90px; opacity: 0.12; filter: blur(2px); }
+
+        .slide-3 { background: linear-gradient(135deg, #78350f 0%, #b45309 50%, #831843 100%); }
+        .slide-3::after { content: "🎁"; position: absolute; right: 10px; bottom: -15px; font-size: 90px; opacity: 0.12; filter: blur(2px); }
+
+        .banner-badge { 
+            background: rgba(255, 255, 255, 0.15); color: #ffffff; padding: 4px 12px; 
+            border-radius: 16px; font-size: 11px; font-weight: 700; width: fit-content; margin-bottom: 6px; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .banner-title { font-size: 19px; font-weight: 800; margin-bottom: 3px; }
+        .banner-desc { font-size: 11px; opacity: 0.9; line-height: 1.4; max-width: 85%; }
+
+        .banner-dots { position: absolute; bottom: 12px; right: 16px; display: flex; gap: 5px; z-index: 5; }
+        .dot { width: 6px; height: 6px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transition: all 0.3s ease; }
+        .dot.active { background: #00f2fe; width: 18px; border-radius: 8px; }
+
+        /* 💰 ব্যালেন্স কার্ড */
+        .balance-banner-card { background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 27, 75, 0.8) 100%); border: 1px solid rgba(0, 242, 254, 0.25); }
+        .balance-banner-card::after { content: "💰"; position: absolute; right: -10px; bottom: -15px; font-size: 90px; opacity: 0.08; }
+        .balance-amount { font-size: 38px; font-weight: 800; color: #00f2fe; margin-top: 4px; text-shadow: 0 0 20px rgba(0, 242, 254, 0.4); }
+
+        /* 🚀 ওয়াচ এন্ড আর্ন */
+        .ad-banner-card { background: linear-gradient(145deg, rgba(24, 24, 37, 0.85) 0%, rgba(46, 16, 101, 0.85) 100%); border: 1px solid rgba(168, 85, 247, 0.3); }
+        .pulse-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; display:inline-block; margin-right:4px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; } }
+
+        .highlevel-progress-bg { background: rgba(0, 0, 0, 0.4); border-radius: 16px; height: 13px; width: 100%; margin: 12px 0 6px 0; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5px; }
+        .highlevel-progress-bar { background: linear-gradient(90deg, #00f2fe 0%, #a855f7 50%, #e100ff 100%); height: 100%; width: 0%; border-radius: 16px; transition: width 0.5s ease; box-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
+
+        .btn-highlevel-watch {
+            background: linear-gradient(135deg, #7f00ff 0%, #e100ff 100%);
+            color: white; border: none; padding: 15px; width: 100%; border-radius: 16px; font-size: 15px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(225, 0, 255, 0.35); display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-highlevel-watch:active { transform: scale(0.97); }
+        .btn-highlevel-watch:disabled { background: #334155; opacity: 0.6; cursor: not-allowed; }
+
+        /* 🎁 রেফারেল কার্ড */
+        .referral-banner-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.85) 0%, rgba(6, 95, 70, 0.85) 100%); border: 1px solid rgba(0, 245, 160, 0.3); }
+        
+        .ref-link-box {
+            background: rgba(10, 15, 29, 0.85);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 12px 0;
+            border: 1px dashed rgba(0, 245, 160, 0.5);
+            gap: 8px;
+        }
+        .ref-link-text {
+            font-size: 11px;
+            color: #00f5a0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            font-weight: 600;
+            user-select: all;
+            direction: ltr;
+        }
+        .btn-copy-sm {
+            background: #00f5a0;
+            color: #042f2e;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .ref-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px; }
+        .stat-banner-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px 6px; text-align: center; }
+
+        /* 📸 সোশ্যাল টাস্ক প্রুফ */
+        .task-banner-card { background: linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(88, 28, 135, 0.85) 100%); border: 1px solid rgba(168, 85, 247, 0.35); }
+        .upload-preview-container {
+            width: 100%; height: 130px; border: 2px dashed rgba(0, 242, 254, 0.4); border-radius: 14px;
+            background: rgba(10, 15, 29, 0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; margin-bottom: 12px;
+        }
+        .upload-preview-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 👤 প্রোফাইল & 💸 উইথড্র */
+        .profile-banner-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%); text-align: center; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #00f2fe; background: #1e293b; font-size: 40px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; box-shadow: 0 0 20px rgba(0,242,254,0.3); }
+        .recharge-banner-card { background: linear-gradient(135deg, rgba(6, 78, 59, 0.85) 0%, rgba(2, 132, 199, 0.85) 100%); }
+
+        .method-selector { display: flex; gap: 8px; margin-bottom: 14px; background: rgba(10, 15, 29, 0.7); padding: 4px; border-radius: 14px; }
+        .method-btn { flex: 1; padding: 10px; border: none; border-radius: 10px; background: transparent; color: var(--text-muted); font-weight: 800; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+        .method-btn.active { background: linear-gradient(135deg, #00f2fe 0%, #2563eb 100%); color: white; }
+
+        .operator-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin: 12px 0; justify-content: center; }
+        .op-chip { font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 16px; color: white; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.18); }
+
+        .banner-input-group { margin-bottom: 12px; }
+        .banner-input-group label { display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px; }
+        .banner-input-group input, .banner-input-group select {
+            width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(10, 15, 29, 0.85); color: white; font-size: 13px; outline: none; font-weight: 600;
+        }
+
+        .btn-banner-action {
+            background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%);
+            color: #042f2e; border: none; padding: 14px; width: 100%; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; 
+            box-shadow: 0 6px 20px rgba(0, 245, 160, 0.3); transition: transform 0.2s;
+        }
+        .btn-banner-action:active { transform: scale(0.97); }
+
+        .support-btn { display: block; text-align: center; color: white; padding: 12px; text-decoration: none; border-radius: 12px; margin-top: 10px; font-weight: 800; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); font-size: 13px; }
+
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটm নেভিগেশন বার (Sleek Compact Navigation Bar) */
+        .navbar { 
+            position: fixed; 
+            bottom: 10px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            max-width: 380px; 
+            background: rgba(15, 23, 42, 0.88); 
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            display: flex; 
+            justify-content: space-evenly; 
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.12); 
+            padding: 4px 2px; 
+            border-radius: 18px;
+            z-index: 999;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        }
+        .nav-item { 
+            border: none; 
+            background: none; 
+            color: var(--text-muted); 
+            font-weight: 700; 
+            font-size: 8.5px; /* 👈 টেক্সট সাইজ ছোট করা হয়েছে */
+            letter-spacing: 0.2px;
+            cursor: pointer; 
+            text-align: center; 
+            flex: 1; 
+            transition: all 0.2s ease; 
+            position: relative; 
+            border-radius: 12px; 
+            padding: 2px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-item span { 
+            font-size: 15px; /* 👈 আইকন সাইজ ছোট করা হয়েছে */
+            display: block; 
+            margin-bottom: 1px; 
+            transition: transform 0.2s ease; 
+        }
+        .nav-item.active { 
+            color: #00f2fe; 
+        }
+        .nav-item.active span { 
+            transform: translateY(-1px) scale(1.06); 
+            filter: drop-shadow(0 0 5px #00f2fe); 
+        }
+        .nav-item.active::after {
+            content: ''; 
+            position: absolute; 
+            bottom: -2px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 8px; 
+            height: 2px; 
+            background: #00f2fe; 
+            border-radius: 10px; 
+            box-shadow: 0 0 6px #00f2fe;
+        }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 9, 19, 0.88); backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-card { 
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); 
+            padding: 24px 20px; border-radius: 24px; text-align: center; width: 88%; max-width: 320px; 
+            border: 1px solid rgba(0, 242, 254, 0.3); color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🚀 ১. হাই-টেক ফিউচারিস্টিক স্প্ল্যাশ স্ক্রিন -->
+    <div id="splash-screen">
+        <div class="splash-core">
+            <div class="splash-ring"></div>
+            <div class="splash-icon">⚡</div>
+        </div>
+        <div class="splash-app-title">ADS EARN PRO</div>
+        <div class="splash-status-text" id="splash-status">LOADING SYSTEM...</div>
+        <div class="splash-progress-track">
+            <div class="splash-progress-fill" id="splash-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- 🎉 Welcome Pop-Up Modal -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="font-size: 48px; margin-bottom: 6px;">🎉</div>
+            <h2 class="text-gradient" style="font-size: 20px; margin-bottom: 4px;" data-i18n="welcome_title">স্বাগতম আমাদের অ্যাপে!</h2>
+            <p style="color: #cbd5e1; margin-bottom: 16px; font-size: 12px; line-height: 1.5;">
+                <span data-i18n="welcome_desc">আমাদের মিনি অ্যাপে যোগ দেওয়ার জন্য ধন্যবাদ! আপনি পাচ্ছেন</span> <strong id="welcome-bonus-modal" class="text-gold">১০</strong> <span data-i18n="currency_bdt">টাকা</span> <span data-i18n="welcome_suffix">ওয়েলকাম বোনাস।</span>
+            </p>
+            <button class="btn-banner-action" onclick="closeWelcomeModal()" data-i18n="claim_bonus_btn">🎁 বোনাস গ্রহণ করুন</button>
+        </div>
+    </div>
+
+    <!-- হেডার (🌐 EN / BN ল্যাঙ্গুয়েজ টগল) -->
+    <div class="header">
+        <div style="width: 50px;"></div>
+        <div class="header-content">
+            <h2 id="header-title" data-i18n="nav_home">হোম</h2>
+            <div class="db-status"><span>⚡</span> <span data-i18n="header_sub">প্রতিদিন ১০ মিনিট সময় দিন</span></div>
+        </div>
+        <button class="lang-switch-btn" onclick="toggleLanguage()">
+            🌐 <span id="lang-indicator">EN</span>
+        </button>
+    </div>
+
+    <div class="container">
+        
+        <!-- ১. 🏠 হোম পেজ -->
+        <section id="home" class="page active">
+            
+            <div class="banner-container">
+                <div class="banner-slide slide-1 active">
+                    <span class="banner-badge" data-i18n="slide1_badge">🚀 ইনস্ট্যান্ট আর্নিং</span>
+                    <div class="banner-title"><span data-i18n="slide1_prefix">প্রতি টা এডের জন্য</span> <span class="banner-reward-amount">২</span> <span data-i18n="currency_bdt">টাকা</span> <span data-i18n="slide1_suffix">পাবেন</span></div>
+                    <div class="banner-desc" data-i18n="slide1_desc">ভিডিও অ্যাড দেখা শেষ হলেই সাথে সাথে অ্যাকাউন্টে টাকা যুক্ত হবে।</div>
+                </div>
+                
+                <div class="banner-slide slide-2">
+                    <span class="banner-badge" data-i18n="slide2_badge">📱 ফাস্ট উইথড্র</span>
+                    <div class="banner-title" data-i18n="slide2_title">রিচার্জ ও USDT (BEP20)</div>
+                    <div class="banner-desc" data-i18n="slide2_desc">মোবাইল রিচার্জ (৫০৳) ও USDT ($1) এ দ্রুত ক্যাশআউট সুবিধা।</div>
+                </div>
+                
+                <div class="banner-slide slide-3">
+                    <span class="banner-badge" data-i18n="slide3_badge">🎁 রেফার এন্ড আর্ন</span>
+                    <div class="banner-title" data-i18n="slide3_title">রেফার করে ইনকাম করুন</div>
+                    <div class="banner-desc"><span data-i18n="slide3_desc">বন্ধুদের শেয়ার করুন এবং প্রতিটি রেফারে পাবেন</span> <span class="banner-ref-bonus">৫</span> <span data-i18n="currency_bdt">টাকা</span> <span data-i18n="slide3_suffix">বোনাস!</span></div>
+                </div>
+
+                <div class="banner-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <!-- 💰 ব্যালেন্স কার্ড -->
+            <div class="banner-card-style balance-banner-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="banner-badge" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe;" data-i18n="balance_card_title">💰 মূল ওয়ালেট ব্যালেন্স</span>
+                    <span style="font-size: 11px; color: #00f5a0; font-weight: 800;" data-i18n="status_active">● এক্টিভ</span>
+                </div>
+                <div id="user-balance" class="balance-amount">৳ ০.০০</div>
+            </div>
+
+            <!-- 🎁 রেফারেল কার্ড -->
+            <div class="banner-card-style referral-banner-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span class="banner-badge" style="background: rgba(0, 245, 160, 0.2); color: #00f5a0;" data-i18n="ref_card_badge">🎁 রেফারেল প্রোগ্রাম</span>
+                    <span class="banner-badge" style="background: linear-gradient(135deg, #00f5a0 0%, #059669 100%); color: #042f2e;"><span data-i18n="ref_bonus_label">বোনাস:</span> ৳<span id="display-ref-bonus">৫</span></span>
+                </div>
+                
+                <h3 style="font-size: 17px; font-weight: 800;" data-i18n="ref_card_title">বন্ধুদের ইনভাইট করুন</h3>
+                <p style="font-size: 11px; color: #cbd5e1;" data-i18n="ref_card_desc">আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই পাবেন আকর্ষণীয় বোনাস!</p>
+
+                <div class="ref-link-box">
+                    <span id="referral-link-display" class="ref-link-text">লিংক লোড হচ্ছে...</span>
+                    <button class="btn-copy-sm" onclick="copyReferralLink()" data-i18n="copy_btn">কপি করুন</button>
+                </div>
+
+                <div class="ref-stats-grid">
+                    <div class="stat-banner-box">
+                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_total_ref">মোট রেফারেল</div>
+                        <div id="home-ref-count" style="font-size: 15px; font-weight: 800; color: #00f5a0; margin-top:2px;">০ জন</div>
+                    </div>
+                    <div class="stat-banner-box">
+                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_ref_earn">রেফারেল আয়</div>
+                        <div id="home-ref-earnings" style="font-size: 15px; font-weight: 800; color: #ffaa00; margin-top:2px;">৳ ০.০০</div>
+                    </div>
+                </div>
+
+                <button onclick="shareReferralLink()" class="btn-banner-action" style="margin-top: 10px; background: linear-gradient(135deg, #00f2fe 0%, #2563eb 100%); color: white;" data-i18n="share_tg_btn">
+                    ✈️ টেলিগ্রামে শেয়ার করুন
+                </button>
+            </div>
+
+            <!-- 🚀 ওয়াচ এন্ড আর্ন কার্ড -->
+            <div class="banner-card-style ad-banner-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span class="banner-badge" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5;">
+                        <span class="pulse-dot"></span> <span data-i18n="live_task">লাইভ টাস্ক</span>
+                    </span>
+                    <span class="banner-badge" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color:#000;"><span data-i18n="per_ad">🎬 প্রতি অ্যাড:</span> ৳<span id="display-reward-amount">২</span></span>
+                </div>
+
+                <h3 style="font-size: 17px; font-weight: 800;" data-i18n="watch_earn_title">📺 ওয়াচ এন্ড আর্ন</h3>
+                <p style="font-size: 11px; color: #c7d2fe; margin-bottom: 10px;">
+                    <span data-i18n="watch_earn_desc1">প্রতিটি ভিডিও অ্যাড দেখার সাথে সাথেই মূল অ্যাকাউন্টে</span> <span id="display-reward-amount2" style="font-weight:bold; color:#ffaa00;">২</span> <span data-i18n="watch_earn_desc2">টাকা যোগ হবে।</span>
+                </p>
+
+                <div class="highlevel-progress-bg">
+                    <div id="ad-progress-bar" class="highlevel-progress-bar"></div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 10px; color: #a5b4fc; margin-bottom: 12px; font-weight: 700;">
+                    <span data-i18n="daily_limit_text">দৈনিক অগ্রগতির লিমিট</span>
+                    <span id="ad-count" style="color: #00f2fe;">০/২০</span>
+                </div>
+
+                <button class="btn-highlevel-watch" id="watch-ad-btn" onclick="showAdsgramAd()">
+                    <span style="font-size: 16px;">▶</span>
+                    <span data-i18n="watch_ad_btn">অ্যাড দেখুন (টাকা আয় করুন)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 📸 ২. সোশ্যাল টাস্ক পেজ -->
+        <section id="tasks" class="page">
+            <div class="banner-card-style task-banner-card">
+                <span class="banner-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;" data-i18n="social_task_badge">📸 সোশ্যাল মিডিয়া প্রুফ টাস্ক</span>
+                <h3 style="font-size: 18px; font-weight: 800; margin-top: 4px;" data-i18n="social_task_title">পোস্ট বা ভিডিও বানিয়ে আয় করুন</h3>
+                <p style="font-size: 11px; opacity: 0.9; margin-top: 4px; line-height: 1.4;" data-i18n="social_task_desc">
+                    আমাদের অ্যাপ সম্পর্কে ফেসবুক, টিকটক বা ইউটিউবে পোস্ট/ভিডিও তৈরি করে লিংক ও স্ক্রিনশট সাবমিট করুন। এডমিন চেক করে আপনাকে বিশেষ বোনাস (৳৫০ - ৳১০০) প্রদান করবে!
+                </p>
+
+                <form id="form-task-proof" onsubmit="handleTaskSubmit(event)" style="margin-top: 14px;">
+                    <div class="banner-input-group">
+                        <label data-i18n="label_platform">প্ল্যাটফর্ম সিলেক্ট করুন:</label>
+                        <select id="task-platform" required>
+                            <option value="" data-i18n="select_platform_opt">প্ল্যাটফর্ম নির্বাচন করুন</option>
+                            <option value="Facebook">Facebook (পোস্ট/ভিডিও/রিল)</option>
+                            <option value="TikTok">TikTok Video</option>
+                            <option value="YouTube">YouTube Shorts / Video</option>
+                        </select>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_post_link">পোস্ট/ভিডিও লিংক:</label>
+                        <input type="url" id="task-link" placeholder="https://..." required>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_screenshot">স্ক্রিনশট প্রুফ আপলোড করুন:</label>
+                        <div class="upload-preview-container" onclick="document.getElementById('task-screenshot-file').click()">
+                            <div id="upload-placeholder" style="text-align: center; color: #94a3b8;">
+                                <div style="font-size: 28px;">📸</div>
+                                <div style="font-size: 11px; font-weight: 700; margin-top: 2px;" data-i18n="click_to_upload">ইমেজ নির্বাচন করতে ক্লিক করুন</div>
+                            </div>
+                            <img id="preview-img-tag" style="display: none;" alt="Proof Preview">
+                        </div>
+                        <input type="file" id="task-screenshot-file" accept="image/*" style="display: none;" onchange="previewTaskImage(event)" required>
+                    </div>
+
+                    <button type="submit" id="btn-submit-task" class="btn-banner-action" style="background: linear-gradient(135deg, #a855f7 0%, #e100ff 100%); color: white;" data-i18n="submit_proof_btn">
+                        🚀 প্রুফ সাবমিট করুন
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ৩. 👤 প্রোফাইল পেজ -->
+        <section id="profile" class="page">
+            <div class="banner-card-style profile-banner-card">
+                <div class="profile-avatar">👤</div>
+                <h3 id="profile-user-name" style="font-size: 18px; font-weight: 800;">ইউজার নাম</h3>
+                <span class="banner-badge" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: black; margin: 6px auto 0 auto;" data-i18n="vip_badge">⭐ VIP Member</span>
+
+                <div class="ref-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:14px;">
+                    <div class="stat-banner-box">
+                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_balance">ব্যালেন্স</div>
+                        <div id="profile-stat-balance" style="font-size: 14px; font-weight: 800; color: #00f2fe; margin-top:2px;">৳ ০.০০</div>
+                    </div>
+                    <div class="stat-banner-box">
+                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_watched_ads">দেখা অ্যাড</div>
+                        <div id="profile-stat-ads" style="font-size: 14px; font-weight: 800; color: #e100ff; margin-top:2px;">০ টি</div>
+                    </div>
+                    <div class="stat-banner-box">
+                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_total_ref">মোট রেফার</div>
+                        <div id="profile-stat-ref" style="font-size: 14px; font-weight: 800; color: #00f5a0; margin-top:2px;">০ টি</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="banner-card-style">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 11px; color: #94a3b8;" data-i18n="label_user_id">ইউজার আইডি:</span>
+                    <strong id="profile-user-id" style="color: #00f2fe; font-size: 12px;">#000000</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 11px; color: #94a3b8;" data-i18n="label_tg_username">টেলিগ্রাম ইউজারনেম:</span>
+                    <strong id="profile-user-username" style="color: #cbd5e1; font-size: 12px;">@user</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 11px; color: #94a3b8;" data-i18n="label_referrer">আমন্ত্রণকারী (Referrer):</span>
+                    <strong id="profile-referred-by" style="color: #00f5a0; font-size: 12px;">Direct Join</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- ৪. 💸 উত্তোলন পেজ -->
+        <section id="withdraw" class="page">
+            <div class="banner-card-style recharge-banner-card">
+                <span class="banner-badge" data-i18n="withdraw_badge">💸 উত্তোলন ও রিচার্জ</span>
+                <h3 style="font-size: 18px; font-weight: 800; margin-top: 4px;" data-i18n="withdraw_title">ইনস্ট্যান্ট ক্যাশআউট</h3>
+
+                <div style="background: rgba(10, 15, 29, 0.65); border-radius: 14px; padding: 12px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; color: #cbd5e1;" data-i18n="wallet_bal_text">বর্তমান ওয়ালেট ব্যালেন্স:</span>
+                    <div id="recharge-page-balance" style="font-size: 20px; font-weight: 800; color: #00f2fe;">৳ ০.০০</div>
+                </div>
+
+                <div class="method-selector">
+                    <button type="button" class="method-btn active" id="btn-method-recharge" onclick="switchWithdrawMethod('recharge')" data-i18n="btn_recharge_method">
+                        📱 মোবাইল রিচার্জ
+                    </button>
+                    <button type="button" class="method-btn" id="btn-method-usdt" onclick="switchWithdrawMethod('usdt')" data-i18n="btn_usdt_method">
+                        🪙 USDT (BEP20)
+                    </button>
+                </div>
+
+                <!-- 📱 ফর্ম ১: মোবাইল রিচার্জ -->
+                <form id="form-recharge" onsubmit="handleRechargeSubmit(event)">
+                    <div style="background: rgba(10, 15, 29, 0.5); padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; font-size: 11px; color: #93c5fd;">
+                        💡 <span data-i18n="min_recharge_text">মোবাইল রিচার্জের সর্বনিম্ন লিমিট:</span> <strong style="color: #00f2fe;">৳<span class="display-min-recharge">৫০</span></strong>
+                    </div>
+
+                    <div class="operator-chips">
+                        <span class="op-chip">GP</span>
+                        <span class="op-chip">Banglalink</span>
+                        <span class="op-chip">Robi</span>
+                        <span class="op-chip">Airtel</span>
+                        <span class="op-chip">Teletalk</span>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_operator">অপারেটর সিলেক্ট করুন:</label>
+                        <select id="recharge-operator" required>
+                            <option value="" data-i18n="select_operator_opt">অপারেটর নির্বাচন করুন</option>
+                            <option>গ্রামীণফোন (Grameenphone)</option>
+                            <option>বাংলালিংক (Banglalink)</option>
+                            <option>রবি (Robi)</option>
+                            <option>এয়ারটেল (Airtel)</option>
+                            <option>টেলিটক (Teletalk)</option>
+                        </select>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_sim_type">সিম টাইপ (SIM Type):</label>
+                        <select id="recharge-sim-type" required>
+                            <option value="Prepaid" data-i18n="sim_prepaid">প্রিপেইড (Prepaid)</option>
+                            <option value="Postpaid" data-i18n="sim_postpaid">পোস্টপেইড (Postpaid)</option>
+                        </select>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_phone">মোবাইল নম্বর:</label>
+                        <input type="tel" id="recharge-phone" placeholder="017xxxxxxxx" pattern="[0-9]{11}" maxlength="11" required>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_recharge_amount">রিচার্জের পরিমাণ (৳):</label>
+                        <input type="number" id="recharge-amount" placeholder="সর্বনিম্ন ৫০ টাকা" min="50" required>
+                    </div>
+
+                    <button type="submit" class="btn-banner-action" data-i18n="btn_submit_recharge">⚡ রিচার্জ রিকোয়েস্ট পাঠান</button>
+                </form>
+
+                <!-- 🪙 ফর্ম ২: USDT -->
+                <form id="form-usdt" style="display: none;" onsubmit="handleUsdtSubmit(event)">
+                    <div style="background: rgba(10, 15, 29, 0.5); padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; font-size: 11px; color: #fef08a;">
+                        🪙 <span data-i18n="min_usdt_text">USDT উত্তোলনের সর্বনিম্ন লিমিট:</span> <strong style="color: #ffaa00;">$<span id="display-min-usdt">১</span> (USDT)</strong>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_usdt_address">USDT BEP-20 ওয়ালেট অ্যাড্রেস (Address):</label>
+                        <input type="text" id="usdt-address" placeholder="0x..." pattern="^0x[a-fA-F0-9]{40}$" required>
+                    </div>
+
+                    <div class="banner-input-group">
+                        <label data-i18n="label_usdt_amount">উত্তোলনের পরিমাণ ($ USDT):</label>
+                        <input type="number" id="usdt-amount" placeholder="সর্বনিম্ন ১ USDT" min="1" step="0.1" oninput="calculateUsdtFee()" required>
+                    </div>
+
+                    <div id="usdt-fee-summary" style="background: rgba(10, 15, 29, 0.8); padding: 12px; border-radius: 12px; margin-bottom: 12px; font-size: 11px; display: none; border: 1px dashed rgba(255,255,255,0.15);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="color:#cbd5e1;" data-i18n="summary_gross">উত্তোলন পরিমাণ:</span>
+                            <b id="summary-gross" style="color:#ffffff;">$0.00</b>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="color:#fca5a5;" data-i18n="summary_fee">১০% সার্ভিস ফি:</span>
+                            <b id="summary-fee" style="color:#ef4444;">-$0.00</b>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="color:#00f5a0; font-weight:bold;" data-i18n="summary_receive">আপনি পাবেন:</span>
+                            <b id="summary-net" style="color:#00f5a0;">$0.00 USDT</b>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color:#94a3b8;">ওয়ালেট থেকে কাটবে:</span>
+                            <b id="summary-bdt" style="color:#00f2fe;">৳0.00</b>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-banner-action" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: #000;" data-i18n="btn_submit_usdt">
+                        🪙 USDT উইথড্র রিকোয়েস্ট পাঠান
+                    </button>
+                </form>
+
+            </div>
+        </section>
+
+        <!-- ৫. 🎧 সাপোর্ট পেজ -->
+        <section id="support" class="page">
+            <div class="banner-card-style" style="background: linear-gradient(135deg, rgba(3, 105, 161, 0.85) 0%, rgba(2, 132, 199, 0.85) 100%);">
+                <span class="banner-badge" data-i18n="support_tg_badge">✈️ টেলিগ্রাম</span>
+                <h3 style="font-size: 17px; font-weight: 800; margin-top: 2px;" data-i18n="support_tg_title">অফিশিয়াল টেলিগ্রাম চ্যানেল</h3>
+                <a id="telegram-support-link" href="#" target="_blank" class="support-btn" data-i18n="join_tg_btn">টেলিগ্রাম গ্রুপে যুক্ত হন</a>
+            </div>
+
+            <div class="banner-card-style" style="background: linear-gradient(135deg, rgba(21, 128, 61, 0.85) 0%, rgba(22, 163, 74, 0.85) 100%);">
+                <span class="banner-badge" data-i18n="support_wa_badge">💬 হোয়াটসঅ্যাপ</span>
+                <h3 style="font-size: 17px; font-weight: 800; margin-top: 2px;" data-i18n="support_wa_title">জরুরি হোয়াটসঅ্যাপ সাপোর্ট</h3>
+                <a id="whatsapp-support-link" href="#" target="_blank" class="support-btn" data-i18n="msg_wa_btn">হোয়াটসঅ্যাপে মেসেজ দিন</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটম নেভিগেশন বার -->
+    <div class="navbar">
+        <button class="nav-item active" onclick="switchTab('home', 'home', this)">
+            <span>🏠</span><span data-i18n="nav_home">হোম</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('tasks', 'tasks', this)">
+            <span>📋</span><span data-i18n="nav_tasks">টাস্ক</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('profile', 'profile', this)">
+            <span>👤</span><span data-i18n="nav_profile">প্রোফাইল</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('withdraw', 'withdraw', this)">
+            <span>💸</span><span data-i18n="nav_withdraw">উত্তোলন</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('support', 'support', this)">
+            <span>🎧</span><span data-i18n="nav_support">সাপোর্ট</span>
+        </button>
+    </div>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBR9cx11EjwDzoCshY_8_j-pBix_brYA50",
+            authDomain: "ads-earning-26019.firebaseapp.com",
+            databaseURL: "https://ads-earning-26019-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "ads-earning-26019",
+            storageBucket: "ads-earning-26019.firebasestorage.app",
+            messagingSenderId: "226920017119",
+            appId: "1:226920017119:web:f9e5d2baac8cc86ab30d6a"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentLang = localStorage.getItem('app_lang') || 'bn';
+
+        const i18n = {
+            bn: {
+                nav_home: "হোম", nav_tasks: "টাস্ক", nav_profile: "প্রোফাইল", nav_withdraw: "উত্তোলন", nav_support: "সাপোর্ট",
+                header_sub: "প্রতিদিন ১০ মিনিট সময় দিন", welcome_title: "স্বাগতম আমাদের অ্যাপে!", welcome_desc: "আমাদের মিনি অ্যাপে যোগ দেওয়ার জন্য ধন্যবাদ! আপনি পাচ্ছেন",
+                currency_bdt: "টাকা", welcome_suffix: "ওয়েলকাম বোনাস।", claim_bonus_btn: "🎁 বোনাস গ্রহণ করুন", slide1_badge: "🚀 ইনস্ট্যান্ট আর্নিং",
+                slide1_prefix: "প্রতি টা এডের জন্য", slide1_suffix: "পাবেন", slide1_desc: "ভিডিও অ্যাড দেখা শেষ হলেই সাথে সাথে অ্যাকাউন্টে টাকা যুক্ত হবে।",
+                slide2_badge: "📱 ফাস্ট উইথড্র", slide2_title: "রিচার্জ ও USDT (BEP20)", slide2_desc: "মোবাইল রিচার্জ (৫০৳) ও USDT ($1) এ দ্রুত ক্যাশআউট সুবিধা।",
+                slide3_badge: "🎁 রেফার এন্ড আর্ন", slide3_title: "রেফার করে ইনকাম করুন", slide3_desc: "বন্ধুদের শেয়ার করুন এবং প্রতিটি রেফারে পাবেন", slide3_suffix: "বোনাস!",
+                balance_card_title: "💰 মূল ওয়ালেট ব্যালেন্স", status_active: "● এক্টিভ", ref_card_badge: "🎁 রেফারেল প্রোগ্রাম", ref_bonus_label: "বোনাস:",
+                ref_card_title: "বন্ধুদের ইনভাইট করুন", ref_card_desc: "আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই পাবেন আকর্ষণীয় বোনাস!",
+                generating_link: "লিংক তৈরি হচ্ছে...", copy_btn: "কপি করুন", stat_total_ref: "মোট রেফারেল", stat_ref_earn: "রেফারেল আয়",
+                share_tg_btn: "✈️ টেলিগ্রামে শেয়ার করুন", live_task: "লাইভ টাস্ক", per_ad: "🎬 প্রতি অ্যাড:", watch_earn_title: "📺 ওয়াচ এন্ড আর্ন",
+                watch_earn_desc1: "প্রতিটি ভিডিও অ্যাড দেখার সাথে সাথেই মূল অ্যাকাউন্টে", watch_earn_desc2: "টাকা যোগ হবে।", daily_limit_text: "দৈনিক অগ্রগতির লিমিট",
+                watch_ad_btn: "অ্যাড দেখুন (টাকা আয় করুন)", social_task_badge: "📸 সোশ্যাল মিডিয়া প্রুফ টাস্ক", social_task_title: "পোস্ট বা ভিডিও বানিয়ে আয় করুন",
+                social_task_desc: "আমাদের অ্যাপ সম্পর্কে ফেসবুক, টিকটক বা ইউটিউবে পোস্ট/ভিডিও তৈরি করে লিংক ও স্ক্রিনশট সাবমিট করুন। এডমিন চেক করে আপনাকে বিশেষ বোনাস (৳৫০ - ৳১০০) প্রদান করবে!",
+                label_platform: "প্ল্যাটফর্ম সিলেক্ট করুন:", select_platform_opt: "প্ল্যাটফর্ম নির্বাচন করুন", label_post_link: "পোস্ট/ভিডিও লিংক:",
+                label_screenshot: "স্ক্রিনশট প্রুফ আপলোড করুন:", click_to_upload: "ইমেজ নির্বাচন করতে ক্লিক করুন", submit_proof_btn: "🚀 প্রুফ সাবমিট করুন",
+                vip_badge: "⭐ VIP Member", stat_balance: "ব্যালেন্স", stat_watched_ads: "দেখা অ্যাড", label_user_id: "ইউজার আইডি:",
+                label_tg_username: "টেলিগ্রাম ইউজারনেম:", label_referrer: "আমন্ত্রণকারী (Referrer):", withdraw_badge: "💸 উত্তোলন ও রিচার্জ",
+                withdraw_title: "ইনস্ট্যান্ট ক্যাশআউট", wallet_bal_text: "বর্তমান ওয়ালেট ব্যালেন্স:", btn_recharge_method: "📱 মোবাইল রিচার্জ",
+                btn_usdt_method: "🪙 USDT (BEP20)", min_recharge_text: "মোবাইল রিচার্জের সর্বনিম্ন লিমিট:", label_operator: "অপারেটর সিলেক্ট করুন:",
+                select_operator_opt: "অপারেটর নির্বাচন করুন", label_sim_type: "সিম টাইপ (SIM Type):", sim_prepaid: "প্রিপেইড (Prepaid)",
+                sim_postpaid: "পোস্টপেইড (Postpaid)", label_phone: "মোবাইল নম্বর:", label_recharge_amount: "রিচার্জের পরিমাণ (৳):",
+                btn_submit_recharge: "⚡ রিচার্জ রিকোয়েস্ট পাঠান", min_usdt_text: "USDT উত্তোলনের সর্বনিম্ন লিমিট:", label_usdt_address: "USDT BEP-20 ওয়ালেট অ্যাড্রেস:",
+                label_usdt_amount: "উত্তোলনের পরিমাণ ($ USDT):", summary_gross: "উত্তোলনের পরিমাণ:", summary_fee: "১০% সার্ভিস ফি:", summary_receive: "আপনি পাবেন:",
+                btn_submit_usdt: "🪙 USDT উইথড্র রিকোয়েস্ট পাঠান", support_tg_badge: "✈️ টেলিগ্রাম", support_tg_title: "অফিশিয়াল টেলিগ্রাম চ্যানেল", join_tg_btn: "টেলিগ্রাম গ্রুপে যুক্ত হন", support_wa_badge: "💬 হোয়াটসঅ্যাপ", support_wa_title: "জরুরি হোয়াটসঅ্যাপ সাপোর্ট", msg_wa_btn: "হোয়াটসঅ্যাপে মেসেজ দিন"
+            },
+            en: {
+                nav_home: "Home", nav_tasks: "Tasks", nav_profile: "Profile", nav_withdraw: "Withdraw", nav_support: "Support",
+                header_sub: "Spend 10 minutes daily", welcome_title: "Welcome to Our App!", welcome_desc: "Thank you for joining our Mini App! You get a",
+                currency_bdt: "BDT", welcome_suffix: "welcome bonus.", claim_bonus_btn: "🎁 Claim Bonus", slide1_badge: "🚀 Instant Earning",
+                slide1_prefix: "Per ad watch reward is", slide1_suffix: "BDT", slide1_desc: "Instantly credited to your balance after watching video ads.",
+                slide2_badge: "📱 Fast Withdraw", slide2_title: "Recharge & USDT (BEP20)", slide2_desc: "Fast cashout via Mobile Recharge (50৳) & USDT ($1).",
+                slide3_badge: "🎁 Refer & Earn", slide3_title: "Earn Money by Referring", slide3_desc: "Share with friends and get", slide3_suffix: "bonus per invite!",
+                balance_card_title: "💰 Main Wallet Balance", status_active: "● Active", ref_card_badge: "🎁 Referral Program", ref_bonus_label: "Bonus:",
+                ref_card_title: "Invite Your Friends", ref_card_desc: "Invite friends with your unique referral link and earn exciting bonuses!",
+                generating_link: "Generating link...", copy_btn: "Copy Link", stat_total_ref: "Total Referrals", stat_ref_earn: "Referral Income",
+                share_tg_btn: "✈️ Share on Telegram", live_task: "Live Task", per_ad: "🎬 Per Ad:", watch_earn_title: "📺 Watch & Earn",
+                watch_earn_desc1: "Watching each video ad immediately adds", watch_earn_desc2: "BDT to your wallet.", daily_limit_text: "Daily Progress Limit",
+                watch_ad_btn: "Watch Ad (Earn Money)", social_task_badge: "📸 Social Media Proof Task", social_task_title: "Earn by Creating Video or Post",
+                social_task_desc: "Create a video/post about our app on Facebook, TikTok, or YouTube, then submit the link & screenshot. Admin will verify and award special bonuses (৳50 - ৳100)!",
+                label_platform: "Select Platform:", select_platform_opt: "Choose Platform", label_post_link: "Post/Video URL:",
+                label_screenshot: "Upload Screenshot Proof:", click_to_upload: "Click here to upload image", submit_proof_btn: "🚀 Submit Proof",
+                vip_badge: "⭐ VIP Member", stat_balance: "Balance", stat_watched_ads: "Ads Watched", label_user_id: "User ID:",
+                label_tg_username: "Telegram Username:", label_referrer: "Referred By:", withdraw_badge: "💸 Cashout & Recharge",
+                withdraw_title: "Instant Cashout", wallet_bal_text: "Current Wallet Balance:", btn_recharge_method: "📱 Mobile Recharge",
+                btn_usdt_method: "🪙 USDT (BEP20)", min_recharge_text: "Min Mobile Recharge limit:", label_operator: "Select Operator:",
+                select_operator_opt: "Choose Operator", label_sim_type: "SIM Type:", sim_prepaid: "Prepaid",
+                sim_postpaid: "Postpaid", label_phone: "Mobile Number:", label_recharge_amount: "Recharge Amount (৳):",
+                btn_submit_recharge: "⚡ Send Recharge Request", min_usdt_text: "Min USDT withdraw limit:", label_usdt_address: "USDT BEP-20 Wallet Address:",
+                label_usdt_amount: "Withdraw Amount ($ USDT):", summary_gross: "Gross Amount:", summary_fee: "10% Service Fee:", summary_receive: "You Receive:",
+                btn_submit_usdt: "🪙 Submit USDT Withdraw", support_tg_badge: "✈️ Telegram", support_tg_title: "Official Telegram Channel", join_tg_btn: "Join Telegram Channel", support_wa_badge: "💬 WhatsApp", support_wa_title: "Urgent WhatsApp Support", msg_wa_btn: "Message on WhatsApp"
+            }
+        };
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('app_lang', lang);
+            document.getElementById('lang-indicator').innerText = lang === 'bn' ? 'EN' : 'BN';
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang] && i18n[lang][key]) el.innerText = i18n[lang][key];
+            });
+        }
+
+        function toggleLanguage() { applyLanguage(currentLang === 'bn' ? 'en' : 'bn'); }
+
+        function startSplashScreen() {
+            const progressBar = document.getElementById('splash-progress-bar');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                if (progress <= 100) progressBar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        const splash = document.getElementById('splash-screen');
+                        splash.style.opacity = '0';
+                        splash.style.visibility = 'hidden';
+                    }, 300);
+                }
+            }, 120);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(currentLang);
+            startSplashScreen();
+        });
+
+        // Telegram WebApp Setup
+        const tg = window.Telegram?.WebApp;
+        if (tg) { tg.ready(); tg.expand(); }
+        const tgUser = tg?.initDataUnsafe?.user;
+
+        if (!tgUser || !tgUser.id) {
+            document.body.innerHTML = `<div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; text-align:center; padding:20px; color:#ffffff; background-color:#070913;"><div style="font-size:50px; margin-bottom:10px;">🚫</div><h2>Access Denied</h2><p style="font-size:13px; color:#cbd5e1;">Open this app inside Telegram Bot.</p></div>`;
+            throw new Error("Telegram required.");
+        }
+
+        const userId = tgUser.id.toString();
+        const userName = tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '');
+        const userUsername = tgUser.username ? '@' + tgUser.username : '@user_' + userId.substr(-4);
+
+        let welcomeBonus = 10, targetAds = 20, rewardAmount = 2, minRecharge = 50, minUsdt = 1, usdtFeePercent = 10, usdtExchangeRate = 120, referralBonus = 5;
+        let balance = 0, adsWatchedCount = 0, referralCount = 0, referralEarnings = 0;
+        let selectedTaskImageBase64 = "", ADSGRAM_BLOCK_ID = "";
+
+        // 🟢 তাৎক্ষণিক রেফার লিংক জেনারেট (ইনস্ট্যান্ট ফিক্স)
+        let myReferralLink = "https://t.me/?startapp=ref_" + userId;
+        document.getElementById('referral-link-display').innerText = myReferralLink;
+
+        document.getElementById('profile-user-name').innerText = userName;
+        document.getElementById('profile-user-id').innerText = '#' + userId;
+        document.getElementById('profile-user-username').innerText = userUsername;
+
+        function getReferrerId() {
+            let startParam = tg?.initDataUnsafe?.start_param;
+            if (!startParam) {
+                let urlParams = new URLSearchParams(window.location.search);
+                startParam = urlParams.get('startapp') || urlParams.get('tgWebAppStartParam') || urlParams.get('start');
+            }
+            if (startParam) {
+                if (startParam.startsWith('ref_')) return startParam.replace('ref_', '');
+                if (/^\d+$/.test(startParam)) return startParam;
+            }
+            return null;
+        }
+
+        let referrerId = getReferrerId();
+
+        // ফায়ারবেস সেটিংস লোড
+        db.ref('settings').on('value', (snapshot) => {
+            const data = snapshot.val() || {};
+            welcomeBonus = Number(data.welcomeBonus ?? 10);
+            targetAds = Number(data.targetAds ?? 20);
+            rewardAmount = Number(data.rewardAmount ?? 2);
+            minRecharge = Number(data.minRecharge ?? 50);
+            minUsdt = Number(data.minUsdt ?? 1);
+            usdtFeePercent = Number(data.usdtFeePercent ?? 10);
+            usdtExchangeRate = Number(data.usdtExchangeRate ?? 120);
+            referralBonus = Number(data.referralBonus ?? 5);
+
+            ADSGRAM_BLOCK_ID = data.adsgramBlockId || "";
+            let BOT_USERNAME = data.botUsername || "";
+            let APP_SHORT_NAME = data.appShortName || "";
+
+            if (data.whatsappNumber) document.getElementById('whatsapp-support-link').href = `https://wa.me/${data.whatsappNumber}`;
+            if (data.telegramChannel) document.getElementById('telegram-support-link').href = data.telegramChannel;
+
+            if (BOT_USERNAME) {
+                myReferralLink = APP_SHORT_NAME 
+                    ? `https://t.me/${BOT_USERNAME}/${APP_SHORT_NAME}?startapp=ref_${userId}` 
+                    : `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
+            } else {
+                myReferralLink = `https://t.me/?startapp=ref_${userId}`;
+            }
+            
+            document.getElementById('referral-link-display').innerText = myReferralLink;
+
+            updateDynamicUI();
+        });
+
+        // ইউজার ডাটা এবং রেফার অটো-বোনাস লজিক
+        db.ref('users/' + userId).once('value', (snapshot) => {
+            if (!snapshot.exists()) {
+                balance = welcomeBonus;
+                let newUserObj = {
+                    name: userName,
+                    username: userUsername,
+                    balance: balance,
+                    adsWatchedCount: 0,
+                    referralCount: 0,
+                    referralEarnings: 0,
+                    referredBy: (referrerId && referrerId !== userId) ? referrerId : null,
+                    joinedAt: new Date().toISOString()
+                };
+
+                db.ref('users/' + userId).set(newUserObj).then(() => {
+                    // রেফারকারী ফ্রেন্ডের ওয়ালেটে বোনাস যোগ
+                    if (referrerId && referrerId !== userId) {
+                        db.ref('users/' + referrerId).once('value', (refSnap) => {
+                            if (refSnap.exists()) {
+                                let refData = refSnap.val();
+                                let currentRefBonus = referralBonus;
+                                let newRefBal = Number(refData.balance || 0) + currentRefBonus;
+                                let newRefCount = Number(refData.referralCount || 0) + 1;
+                                let newRefEarn = Number(refData.referralEarnings || 0) + currentRefBonus;
+
+                                db.ref('users/' + referrerId).update({
+                                    balance: newRefBal,
+                                    referralCount: newRefCount,
+                                    referralEarnings: newRefEarn
+                                });
+                            }
+                        });
+                    }
+                });
+                document.getElementById('welcome-modal').style.display = 'flex';
+            }
+
+            db.ref('users/' + userId).on('value', (snap) => {
+                const uData = snap.val();
+                if (uData) {
+                    balance = uData.balance || 0;
+                    adsWatchedCount = uData.adsWatchedCount || 0;
+                    referralCount = uData.referralCount || 0;
+                    referralEarnings = uData.referralEarnings || 0;
+
+                    if (uData.referredBy) {
+                        document.getElementById('profile-referred-by').innerText = '#' + uData.referredBy;
+                    }
+                    renderUI();
+                }
+            });
+        });
+
+        function renderUI() {
+            document.getElementById('user-balance').innerText = `৳ ${balance}.00`;
+            document.getElementById('profile-stat-balance').innerText = `৳ ${balance}.00`;
+            document.getElementById('recharge-page-balance').innerText = `৳ ${balance}.00`;
+            document.getElementById('profile-stat-ads').innerText = `${adsWatchedCount} টি`;
+            document.getElementById('profile-stat-ref').innerText = `${referralCount} জন`;
+            document.getElementById('home-ref-count').innerText = `${referralCount} জন`;
+            document.getElementById('home-ref-earnings').innerText = `৳ ${referralEarnings}.00`;
+
+            let percentage = Math.min((adsWatchedCount / targetAds) * 100, 100);
+            document.getElementById('ad-count').innerText = `${adsWatchedCount}/${targetAds}`;
+            document.getElementById('ad-progress-bar').style.width = `${percentage}%`;
+        }
+
+        function updateDynamicUI() {
+            document.getElementById('welcome-bonus-modal').innerText = welcomeBonus;
+            document.querySelectorAll('.banner-reward-amount').forEach(e => e.innerText = rewardAmount);
+            document.querySelectorAll('.banner-ref-bonus').forEach(e => e.innerText = referralBonus);
+            document.getElementById('display-reward-amount').innerText = rewardAmount;
+            document.getElementById('display-reward-amount2').innerText = rewardAmount;
+            document.getElementById('display-ref-bonus').innerText = referralBonus;
+            document.querySelectorAll('.display-min-recharge').forEach(e => e.innerText = minRecharge);
+            document.getElementById('display-min-usdt').innerText = minUsdt;
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const dots = document.querySelectorAll('.dot');
+        setInterval(() => {
+            if (slides.length === 0 || document.hidden) return;
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }, 3500);
+
+        function closeWelcomeModal() { document.getElementById('welcome-modal').style.display = 'none'; }
+
+        function switchTab(pageId, titleKey, btnElement) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            const headerTitleKey = 'nav_' + titleKey;
+            if(i18n[currentLang][headerTitleKey]) document.getElementById('header-title').innerText = i18n[currentLang][headerTitleKey];
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+        }
+
+        function copyReferralLink() {
+            navigator.clipboard.writeText(myReferralLink).then(() => alert('✅ রেফারেল লিংক কপি হয়েছে!\nবন্ধুদের সাথে শেয়ার করুন।'));
+        }
+
+        function shareReferralLink() {
+            const shareText = `🎉 আমাদের আর্নিং অ্যাপে ফ্রিতে ইনকাম করুন! জয়েন করলেই পাবেন ৳${welcomeBonus} টাকা বোনাস।\n\n👇 জয়েন করুন:\n${myReferralLink}`;
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(myReferralLink)}&text=${encodeURIComponent(shareText)}`, '_blank');
+        }
+
+        function previewTaskImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 500;
+                    const scaleFactor = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleFactor;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    selectedTaskImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
+
+                    document.getElementById('upload-placeholder').style.display = 'none';
+                    const imgTag = document.getElementById('preview-img-tag');
+                    imgTag.src = selectedTaskImageBase64;
+                    imgTag.style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleTaskSubmit(event) {
+            event.preventDefault();
+            const platform = document.getElementById('task-platform').value;
+            const postLink = document.getElementById('task-link').value.trim();
+
+            if (!selectedTaskImageBase64) return alert('⚠️ স্ক্রিনশট আপলোড করুন!');
+
+            db.ref('task_proofs').push({
+                userId: userId, userName: userName, userUsername: userUsername, platform: platform, postLink: postLink, screenshot: selectedTaskImageBase64, status: 'Pending', timestamp: new Date().toISOString()
+            }).then(() => {
+                alert('🎉 প্রুফ জমা হয়েছে!');
+                event.target.reset();
+                selectedTaskImageBase64 = "";
+                document.getElementById('upload-placeholder').style.display = 'block';
+                document.getElementById('preview-img-tag').style.display = 'none';
+            });
+        }
+
+        function showAdsgramAd() {
+            if (typeof Adsgram === 'undefined' || !ADSGRAM_BLOCK_ID) return alert('⚠️ বিজ্ঞাপণ লোড করা সম্ভব হয়নি!');
+            Adsgram.init({ blockId: ADSGRAM_BLOCK_ID }).show().then(() => {
+                adsWatchedCount++;
+                balance += rewardAmount;
+                db.ref('users/' + userId).update({ balance: balance, adsWatchedCount: adsWatchedCount });
+                renderUI();
+                alert(`🎉 ৳${rewardAmount} যোগ হয়েছে!`);
+            }).catch(() => alert('⚠️ বিজ্ঞাপণ সম্পূর্ণ দেখা হয়নি!'));
+        }
+
+        function switchWithdrawMethod(method) {
+            document.getElementById('form-recharge').style.display = method === 'recharge' ? 'block' : 'none';
+            document.getElementById('form-usdt').style.display = method === 'usdt' ? 'block' : 'none';
+            document.getElementById('btn-method-recharge').classList.toggle('active', method === 'recharge');
+            document.getElementById('btn-method-usdt').classList.toggle('active', method === 'usdt');
+        }
+
+        function handleRechargeSubmit(event) {
+            event.preventDefault();
+            const amount = parseInt(document.getElementById('recharge-amount').value);
+            if (amount < minRecharge || amount > balance) return alert('⚠️ অপর্যাপ্ত ব্যালেন্স বা কম অ্যামাউন্ট!');
+
+            balance -= amount;
+            renderUI();
+            db.ref('users/' + userId).update({ balance: balance });
+            db.ref('withdrawals').push({
+                userId: userId, userName: userName, userUsername: userUsername, method: 'Mobile Recharge', operator: document.getElementById('recharge-operator').value, simType: document.getElementById('recharge-sim-type').value, phone: document.getElementById('recharge-phone').value, amount: amount, status: 'Pending', timestamp: new Date().toISOString()
+            });
+            alert('⚡ রিকোয়েস্ট জমা হয়েছে!');
+            event.target.reset();
+        }
+
+        function calculateUsdtFee() {
+            const amountUsd = parseFloat(document.getElementById('usdt-amount').value) || 0;
+            const feeSummary = document.getElementById('usdt-fee-summary');
+            if (amountUsd > 0) {
+                feeSummary.style.display = 'block';
+                const fee = amountUsd * (usdtFeePercent / 100);
+                const netAmount = amountUsd - fee;
+                const bdtCost = amountUsd * usdtExchangeRate;
+
+                document.getElementById('summary-gross').innerText = `$${amountUsd.toFixed(2)}`;
+                document.getElementById('summary-fee').innerText = `-$${fee.toFixed(2)} (${usdtFeePercent}%)`;
+                document.getElementById('summary-net').innerText = `$${netAmount.toFixed(2)} USDT`;
+                document.getElementById('summary-bdt').innerText = `৳${bdtCost.toFixed(2)}`;
+            } else { feeSummary.style.display = 'none'; }
+        }
+
+        function handleUsdtSubmit(event) {
+            event.preventDefault();
+            const usdtAddress = document.getElementById('usdt-address').value.trim();
+            const amountUsd = parseFloat(document.getElementById('usdt-amount').value);
+            const totalBdtNeeded = amountUsd * usdtExchangeRate;
+
+            if (amountUsd < minUsdt || totalBdtNeeded > balance) return alert('⚠️ অপর্যাপ্ত ব্যালেন্স!');
+
+            balance -= totalBdtNeeded;
+            renderUI();
+            db.ref('users/' + userId).update({ balance: balance });
+            db.ref('withdrawals').push({
+                userId: userId, userName: userName, userUsername: userUsername, method: 'USDT (BEP20)', usdtAddress: usdtAddress, requestedUsd: amountUsd, netUsdToReceive: amountUsd - (amountUsd * (usdtFeePercent / 100)), bdtDeducted: totalBdtNeeded, status: 'Pending', timestamp: new Date().toISOString()
+            });
+            alert('🪙 উইথড্র রিকোয়েস্ট জমা হয়েছে!');
+            event.target.reset();
+            document.getElementById('usdt-fee-summary').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
