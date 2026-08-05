@@ -7,7 +7,7 @@
 
     <!-- Preconnect for Fast Resource Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crssorigin>
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 
     <!-- Google Font: Hind Siliguri & Orbitron -->
@@ -176,7 +176,7 @@
 
         .container { padding: 16px; max-width: 480px; margin: 0 auto; }
 
-        /* 👤১. উপরে ছোট প্রোফাইল বার স্টাইল (Compact Profile Bar) */
+        /* 👤১. উপরে ছোট প্রোফাইল বার স্টাইল */
         .compact-profile-bar {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%);
             border: 1px solid rgba(0, 242, 254, 0.3);
@@ -245,7 +245,7 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35); border: 1px solid var(--card-border);
         }
 
-        /* 🎨 ১. স্লাইডিং ব্যানার */
+        /* 🎨 ১. ৫টি স্লাইডিং ব্যানার স্টাইল */
         .banner-container { 
             position: relative; width: 100%; height: 160px; border-radius: 22px; overflow: hidden; 
             margin-bottom: 16px; box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.12);
@@ -261,6 +261,12 @@
 
         .slide-3 { background: linear-gradient(135deg, #78350f 0%, #b45309 50%, #831843 100%); }
         .slide-3::after { content: "🎁"; position: absolute; right: 10px; bottom: -15px; font-size: 90px; opacity: 0.12; filter: blur(2px); }
+
+        .slide-4 { background: linear-gradient(135deg, #311b92 0%, #4a148c 50%, #6a1b9a 100%); }
+        .slide-4::after { content: "🎡"; position: absolute; right: 10px; bottom: -15px; font-size: 90px; opacity: 0.12; filter: blur(2px); }
+
+        .slide-5 { background: linear-gradient(135deg, #881337 0%, #9f1239 50%, #be123c 100%); }
+        .slide-5::after { content: "📸"; position: absolute; right: 10px; bottom: -15px; font-size: 90px; opacity: 0.12; filter: blur(2px); }
 
         .banner-badge { 
             background: rgba(255, 255, 255, 0.15); color: #ffffff; padding: 4px 12px; 
@@ -352,7 +358,7 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
-        /* 🎁 ২. ব্যানার স্টাইল রেফারেল পেজ (Banner Style Refer Page) */
+        /* 🎁 ২. ব্যানার স্টাইল রেফারেল পেজ */
         .refer-hero-banner {
             background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%);
             border-radius: 22px;
@@ -530,7 +536,7 @@
             border: 1px solid rgba(0, 242, 254, 0.3); color: white;
         }
 
-        /* 📜 উইথড্রয়াল ও টাস্ক হিস্ট্রি বটম শিট পপআপ স্টাইল */
+        /* 📜 উইথড্রয়াল ও টাস্ক হিস্ট্রি বটম শিট পপআপ স্টাইল */
         .history-overlay {
             position: fixed;
             top: 0;
@@ -774,7 +780,7 @@
 
     <div class="container">
         
-        <!-- 👤 ১. উপরে ছোট কমপ্যাক্ট প্রোফাইল বার (Compact Profile Bar) -->
+        <!-- 👤 ১. উপরে ছোট কমপ্যাক্ট প্রোফাইল বার -->
         <div class="compact-profile-bar">
             <div class="compact-profile-left">
                 <div class="compact-avatar">👤</div>
@@ -792,27 +798,48 @@
         <!-- ১. 🏠 হোম পেজ -->
         <section id="home" class="page active">
             
+            <!-- 🎨 ৫টি অটো-স্লাইডিং ব্যানার -->
             <div class="banner-container">
+                <!-- ১. অ্যাড দেখা -->
                 <div class="banner-slide slide-1 active">
                     <span class="banner-badge" data-i18n="slide1_badge">🚀 ইনস্ট্যান্ট আর্নিং</span>
                     <div class="banner-title"><span data-i18n="slide1_prefix">প্রতি টা এডের জন্য</span> <span class="banner-reward-amount">২</span> <span data-i18n="currency_bdt">টাকা</span> <span data-i18n="slide1_suffix">পাবেন</span></div>
                     <div class="banner-desc" data-i18n="slide1_desc">ভিডিও অ্যাড দেখা শেষ হলেই সাথে সাথে অ্যাকাউন্টে টাকা যুক্ত হবে।</div>
                 </div>
                 
+                <!-- ২. উইথড্র -->
                 <div class="banner-slide slide-2">
                     <span class="banner-badge" data-i18n="slide2_badge">📱 ফাস্ট উইথড্র</span>
                     <div class="banner-title" data-i18n="slide2_title">রিচার্জ ও USDT (BEP20)</div>
                     <div class="banner-desc" data-i18n="slide2_desc">মোবাইল রিচার্জ (৫০৳) ও USDT ($1) এ দ্রুত ক্যাশআউট সুবিধা।</div>
                 </div>
                 
+                <!-- ৩. রেফারেল -->
                 <div class="banner-slide slide-3">
                     <span class="banner-badge" data-i18n="slide3_badge">🎁 রেফার এন্ড আর্ন</span>
                     <div class="banner-title" data-i18n="slide3_title">রেফার করে ইনকাম করুন</div>
                     <div class="banner-desc"><span data-i18n="slide3_desc">বন্ধুদের শেয়ার করুন এবং প্রতিটি রেফারে পাবেন</span> <span class="banner-ref-bonus">৫</span> <span data-i18n="currency_bdt">টাকা</span> <span data-i18n="slide3_suffix">বোনাস!</span></div>
                 </div>
 
+                <!-- ৪. ল্যাকি স্পিন -->
+                <div class="banner-slide slide-4">
+                    <span class="banner-badge" data-i18n="slide4_badge">🎡 দৈনিক স্পিন</span>
+                    <div class="banner-title" data-i18n="slide4_title">ল্যাকি স্পিন এন্ড উইন</div>
+                    <div class="banner-desc" data-i18n="slide4_desc">প্রতিদিন ফ্রী স্পিন ঘুরে ভাগ্য পরীক্ষা করুন এবং রিওয়ার্ড জিতুন!</div>
+                </div>
+
+                <!-- ৫. সোশ্যাল টাস্ক -->
+                <div class="banner-slide slide-5">
+                    <span class="banner-badge" data-i18n="slide5_badge">📸 সোশ্যাল টাস্ক</span>
+                    <div class="banner-title" data-i18n="slide5_title">ভিডিও বা পোস্ট বানিয়ে আয়</div>
+                    <div class="banner-desc" data-i18n="slide5_desc">ফেসবুক, টিকটক বা ইউটিউবে ভিডিও বা পোস্ট বানিয়ে আকর্ষণীয় বোনাস পান!</div>
+                </div>
+
+                <!-- ৫টি ডট -->
                 <div class="banner-dots">
                     <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
                     <span class="dot"></span>
                     <span class="dot"></span>
                 </div>
@@ -873,7 +900,7 @@
             </div>
         </section>
 
-        <!-- 🎁 ২. ব্যানার স্টাইল রেফারেল পেজ (Banner Style Refer Page) -->
+        <!-- 🎁 ২. ব্যানার স্টাইল রেফারেল পেজ -->
         <section id="refer" class="page">
             <div class="refer-hero-banner">
                 <span class="banner-badge" style="background: rgba(255, 255, 255, 0.2); color: #00f5a0;" data-i18n="ref_card_badge">🎁 রেফারেল প্রোগ্রাম</span>
@@ -1237,10 +1264,12 @@
             bn: {
                 nav_home: "হোম", nav_refer: "রেফার", nav_tasks: "টাস্ক", nav_withdraw: "উত্তোলন", nav_support: "সাপোর্ট",
                 header_sub: "প্রতিদিন ১০ মিনিট সময় দিন", welcome_title: "স্বাগতম আমাদের অ্যাপে!", welcome_desc: "আমাদের মিনি অ্যাপে যোগ দেওয়ার জন্য ধন্যবাদ! আপনি পাচ্ছেন",
-                currency_bdt: "টাকা", welcome_suffix: "ওয়েলকাম বোনাস।", claim_bonus_btn: "🎁 বোনাস গ্রহণ করুন", slide1_badge: "🚀 ইনস্ট্যান্ট আর্নিং",
-                slide1_prefix: "প্রতি টা এডের জন্য", slide1_suffix: "পাবেন", slide1_desc: "ভিডিও অ্যাড দেখা শেষ হলেই সাথে সাথে অ্যাকাউন্টে টাকা যুক্ত হবে।",
+                currency_bdt: "টাকা", welcome_suffix: "ওয়েলকাম বোনাস।", claim_bonus_btn: "🎁 বোনাস গ্রহণ করুন", 
+                slide1_badge: "🚀 ইনস্ট্যান্ট আর্নিং", slide1_prefix: "প্রতি টা এডের জন্য", slide1_suffix: "পাবেন", slide1_desc: "ভিডিও অ্যাড দেখা শেষ হলেই সাথে সাথে অ্যাকাউন্টে টাকা যুক্ত হবে।",
                 slide2_badge: "📱 ফাস্ট উইথড্র", slide2_title: "রিচার্জ ও USDT (BEP20)", slide2_desc: "মোবাইল রিচার্জ (৫০৳) ও USDT ($1) এ দ্রুত ক্যাশআউট সুবিধা।",
                 slide3_badge: "🎁 রেফার এন্ড আর্ন", slide3_title: "রেফার করে ইনকাম করুন", slide3_desc: "বন্ধুদের শেয়ার করুন এবং প্রতিটি রেফারে পাবেন", slide3_suffix: "বোনাস!",
+                slide4_badge: "🎡 দৈনিক স্পিন", slide4_title: "ল্যাকি স্পিন এন্ড উইন", slide4_desc: "প্রতিদিন ফ্রী স্পিন ঘুরে ভাগ্য পরীক্ষা করুন এবং রিওয়ার্ড জিতুন!",
+                slide5_badge: "📸 সোশ্যাল টাস্ক", slide5_title: "ভিডিও বা পোস্ট বানিয়ে আয়", slide5_desc: "ফেসবুক, টিকটক বা ইউটিউবে ভিডিও বা পোস্ট বানিয়ে আকর্ষণীয় বোনাস পান!",
                 balance_card_title: "💰 মূল ওয়ালেট ব্যালেন্স", status_active: "● এক্টিভ", ref_card_badge: "🎁 রেফারেল প্রোগ্রাম", ref_bonus_label: "বোনাস:",
                 ref_hero_title: "বন্ধুদের রেফার করুন, আনলিমিটেড আয় করুন!", ref_hero_desc: "আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই তাৎক্ষণিক বোনাস সরাসরি আপনার মূল ওয়ালেটে জমা হবে।", ref_stat_title: "📊 আপনার রেফারেল সামারি",
                 ref_card_title: "আপনার ইনভাইট লিংক", ref_card_desc: "আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই পাবেন আকর্ষণীয় বোনাস!",
@@ -1265,10 +1294,12 @@
             en: {
                 nav_home: "Home", nav_refer: "Refer", nav_tasks: "Tasks", nav_withdraw: "Withdraw", nav_support: "Support",
                 header_sub: "Spend 10 minutes daily", welcome_title: "Welcome to Our App!", welcome_desc: "Thank you for joining our Mini App! You get a",
-                currency_bdt: "BDT", welcome_suffix: "welcome bonus.", claim_bonus_btn: "🎁 Claim Bonus", slide1_badge: "🚀 Instant Earning",
-                slide1_prefix: "Per ad watch reward is", slide1_suffix: "BDT", slide1_desc: "Instantly credited to your balance after watching video ads.",
+                currency_bdt: "BDT", welcome_suffix: "welcome bonus.", claim_bonus_btn: "🎁 Claim Bonus", 
+                slide1_badge: "🚀 Instant Earning", slide1_prefix: "Per ad watch reward is", slide1_suffix: "BDT", slide1_desc: "Instantly credited to your balance after watching video ads.",
                 slide2_badge: "📱 Fast Withdraw", slide2_title: "Recharge & USDT (BEP20)", slide2_desc: "Fast cashout via Mobile Recharge (50৳) & USDT ($1).",
                 slide3_badge: "🎁 Refer & Earn", slide3_title: "Earn Money by Referring", slide3_desc: "Share with friends and get", slide3_suffix: "bonus per invite!",
+                slide4_badge: "🎡 Daily Spin", slide4_title: "Lucky Spin & Win", slide4_desc: "Spin daily to test your luck and win exciting rewards!",
+                slide5_badge: "📸 Social Tasks", slide5_title: "Earn by Creating Content", slide5_desc: "Create posts/videos on FB, TikTok, or YouTube to earn special rewards!",
                 balance_card_title: "💰 Main Wallet Balance", status_active: "● Active", ref_card_badge: "🎁 Referral Program", ref_bonus_label: "Bonus:",
                 ref_hero_title: "Invite Friends & Earn Unlimited!", ref_hero_desc: "Share your unique referral link and get instant cash rewards directly in your wallet.", ref_stat_title: "📊 Your Referral Summary",
                 ref_card_title: "Your Invite Link", ref_card_desc: "Invite friends with your unique referral link and earn exciting bonuses!",
@@ -1488,14 +1519,18 @@
             document.getElementById('display-min-usdt').innerText = minUsdt;
         }
 
+        /* 🔄 ৫টি ব্যানার অটো-স্লাইড ইন্টারভাল লজিক */
         let currentSlide = 0;
-        const slides = document.querySelectorAll('.banner-slide');
-        const dots = document.querySelectorAll('.dot');
         setInterval(() => {
+            const slides = document.querySelectorAll('.banner-slide');
+            const dots = document.querySelectorAll('.dot');
             if (slides.length === 0 || document.hidden) return;
+            
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.remove('active');
+            
             currentSlide = (currentSlide + 1) % slides.length;
+            
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
         }, 3500);
