@@ -19,7 +19,7 @@
     <!-- Adsgram SDK -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-    <!-- Canvas Confetti SDK (নতুন যুক্ত করা হয়েছে) -->
+    <!-- Canvas Confetti SDK -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <!-- Firebase SDKs -->
@@ -176,6 +176,68 @@
 
         .container { padding: 16px; max-width: 480px; margin: 0 auto; }
 
+        /* 👤১. উপরে ছোট প্রোফাইল বার স্টাইল (Compact Profile Bar) */
+        .compact-profile-bar {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 18px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .compact-profile-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .compact-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #00f2fe;
+            background: #1e293b;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+        .compact-user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .compact-user-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .compact-user-id {
+            font-size: 10px;
+            color: #00f5a0;
+            font-weight: 700;
+        }
+        .compact-profile-right {
+            text-align: right;
+        }
+        .compact-bal-label {
+            font-size: 9px;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .compact-bal-amount {
+            font-size: 15px;
+            font-weight: 800;
+            color: #00f2fe;
+            text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+        }
+
         /* 🌟 গ্লাসমোরফিক কার্ড */
         .banner-card-style {
             border-radius: 22px; padding: 20px; margin-bottom: 16px; color: white; position: relative; overflow: hidden;
@@ -225,7 +287,7 @@
         .highlevel-progress-bg { background: rgba(0, 0, 0, 0.4); border-radius: 16px; height: 13px; width: 100%; margin: 12px 0 6px 0; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5px; }
         .highlevel-progress-bar { background: linear-gradient(90deg, #00f2fe 0%, #a855f7 50%, #e100ff 100%); height: 100%; width: 0%; border-radius: 16px; transition: width 0.5s ease; box-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
 
-        /* ✨ ✨ ✨ নতুন শিমার & নিয়ন গ্লো অ্যানিমেশন স্টাইল ✨ ✨ ✨ */
+        /* ✨ শিমার & নিয়ন গ্লো অ্যানিমেশন স্টাইল ✨ */
         .btn-shimmer {
             position: relative;
             overflow: hidden !important;
@@ -262,7 +324,55 @@
         .btn-highlevel-watch:active { transform: scale(0.97); }
         .btn-highlevel-watch:disabled { background: #334155; opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
-        /* 🎁 রেফারেল কার্ড */
+        /* 🎡 স্পিন হুইল স্টাইল */
+        .wheel-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 15px auto;
+        }
+        .wheel-canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid #00f2fe;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            transition: transform 4s cubic-bezier(0.15, 0.9, 0.15, 1);
+        }
+        .wheel-arrow {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 18px solid #ffaa00;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        /* 🎁 ২. ব্যানার স্টাইল রেফারেল পেজ (Banner Style Refer Page) */
+        .refer-hero-banner {
+            background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%);
+            border-radius: 22px;
+            padding: 24px 18px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 245, 160, 0.4);
+            box-shadow: 0 12px 30px rgba(0, 245, 160, 0.2);
+            margin-bottom: 16px;
+        }
+        .refer-hero-banner::after {
+            content: "🎁";
+            position: absolute;
+            right: -10px;
+            bottom: -20px;
+            font-size: 110px;
+            opacity: 0.15;
+            filter: blur(1px);
+        }
+
         .referral-banner-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.85) 0%, rgba(6, 95, 70, 0.85) 100%); border: 1px solid rgba(0, 245, 160, 0.3); }
         
         .ref-link-box {
@@ -300,7 +410,7 @@
         }
 
         .ref-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px; }
-        .stat-banner-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px 6px; text-align: center; }
+        .stat-banner-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px 6px; text-align: center; }
 
         /* 📸 সোশ্যাল টাস্ক প্রুফ */
         .task-banner-card { background: linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(88, 28, 135, 0.85) 100%); border: 1px solid rgba(168, 85, 247, 0.35); }
@@ -310,9 +420,7 @@
         }
         .upload-preview-container img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 👤 প্রোফাইল & 💸 উইথড্র */
-        .profile-banner-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%); text-align: center; }
-        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #00f2fe; background: #1e293b; font-size: 40px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; box-shadow: 0 0 20px rgba(0,242,254,0.3); }
+        /* 💸 উইথড্র */
         .recharge-banner-card { background: linear-gradient(135deg, rgba(6, 78, 59, 0.85) 0%, rgba(2, 132, 199, 0.85) 100%); }
 
         .method-selector { display: flex; gap: 8px; margin-bottom: 14px; background: rgba(10, 15, 29, 0.7); padding: 4px; border-radius: 14px; }
@@ -342,14 +450,14 @@
         .page.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটম নেভিগেশন বার */
+        /* 🔮 স্লিম গ্লাস বটম নেভিগেশন বার */
         .navbar { 
             position: fixed; 
             bottom: 10px; 
             left: 50%; 
             transform: translateX(-50%); 
-            width: 90%; 
-            max-width: 380px; 
+            width: 92%; 
+            max-width: 400px; 
             background: rgba(15, 23, 42, 0.88); 
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -422,7 +530,7 @@
             border: 1px solid rgba(0, 242, 254, 0.3); color: white;
         }
 
-        /* 📜 🚀 উইথড্রয়াল ও টাস্ক হিস্ট্রি বটম শিট পপআপ স্টাইল */
+        /* 📜 উইথড্রয়াল ও টাস্ক হিস্ট্রি বটম শিট পপআপ স্টাইল */
         .history-overlay {
             position: fixed;
             top: 0;
@@ -554,9 +662,78 @@
             transition: all 0.2s;
         }
         .btn-history-trigger:active { transform: scale(0.98); background: rgba(0, 242, 254, 0.15); }
+
+        /* 🖼️ ইমেজ লাইটবক্স পপআপ */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(3, 7, 18, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 999999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .lightbox-img {
+            max-width: 92%;
+            max-height: 80vh;
+            border-radius: 16px;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 25px; right: 20px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.15);
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+        }
+
+        /* 🔔 টোস্ট নোটিফিকেশন কন্টেইনার */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+            width: 90%;
+            max-width: 340px;
+        }
+        .toast-msg {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--accent-cyan);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            text-align: center;
+            animation: toastIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
     </style>
 </head>
 <body>
+
+    <!-- 🔔 কাস্টম টোস্ট মেসেজ কন্টেইনার -->
+    <div id="toast-container"></div>
 
     <!-- 🚀 ১. স্প্ল্যাশ স্ক্রিন -->
     <div id="splash-screen">
@@ -597,6 +774,21 @@
 
     <div class="container">
         
+        <!-- 👤 ১. উপরে ছোট কমপ্যাক্ট প্রোফাইল বার (Compact Profile Bar) -->
+        <div class="compact-profile-bar">
+            <div class="compact-profile-left">
+                <div class="compact-avatar">👤</div>
+                <div class="compact-user-details">
+                    <span id="top-profile-name" class="compact-user-name">ইউজার নাম</span>
+                    <span id="top-profile-id" class="compact-user-id">#000000</span>
+                </div>
+            </div>
+            <div class="compact-profile-right">
+                <div class="compact-bal-label">ব্যালেন্স</div>
+                <div id="top-profile-balance" class="compact-bal-amount">৳ ০.০০</div>
+            </div>
+        </div>
+
         <!-- ১. 🏠 হোম পেজ -->
         <section id="home" class="page active">
             
@@ -635,34 +827,19 @@
                 <div id="user-balance" class="balance-amount">৳ ০.০০</div>
             </div>
 
-            <!-- 🎁 রেফারেল কার্ড -->
-            <div class="banner-card-style referral-banner-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span class="banner-badge" style="background: rgba(0, 245, 160, 0.2); color: #00f5a0;" data-i18n="ref_card_badge">🎁 রেফারেল প্রোগ্রাম</span>
-                    <span class="banner-badge" style="background: linear-gradient(135deg, #00f5a0 0%, #059669 100%); color: #042f2e;"><span data-i18n="ref_bonus_label">বোনাস:</span> ৳<span id="display-ref-bonus">৫</span></span>
-                </div>
-                
-                <h3 style="font-size: 17px; font-weight: 800;" data-i18n="ref_card_title">বন্ধুদের ইনভাইট করুন</h3>
-                <p style="font-size: 11px; color: #cbd5e1;" data-i18n="ref_card_desc">আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই পাবেন আকর্ষণীয় বোনাস!</p>
+            <!-- 🎡 স্পিন অ্যান্ড উইন কার্ড -->
+            <div class="banner-card-style" style="background: linear-gradient(145deg, rgba(30, 27, 75, 0.85) 0%, rgba(88, 28, 135, 0.85) 100%); text-align: center; border: 1px solid rgba(168, 85, 247, 0.35);">
+                <span class="banner-badge" style="background: rgba(0, 245, 160, 0.2); color: #00f5a0;" data-i18n="spin_badge">🎁 দৈনিক ফ্রী উপহার</span>
+                <h3 style="font-size: 17px; font-weight: 800; margin-top: 4px;" data-i18n="spin_title">🎡 ল্যাকি স্পিন এন্ড উইন</h3>
+                <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 6px;" data-i18n="spin_desc">প্রতিদিন ফ্রী স্পিন ঘুরে ভাগ্য পরীক্ষা করুন এবং রিওয়ার্ড জিতুন!</p>
 
-                <div class="ref-link-box">
-                    <span id="referral-link-display" class="ref-link-text">লিংক লোড হচ্ছে...</span>
-                    <button class="btn-copy-sm" onclick="copyReferralLink()" data-i18n="copy_btn">কপি করুন</button>
+                <div class="wheel-wrapper">
+                    <div class="wheel-arrow"></div>
+                    <canvas id="wheelCanvas" class="wheel-canvas" width="220" height="220"></canvas>
                 </div>
 
-                <div class="ref-stats-grid">
-                    <div class="stat-banner-box">
-                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_total_ref">মোট রেফারেল</div>
-                        <div id="home-ref-count" style="font-size: 15px; font-weight: 800; color: #00f5a0; margin-top:2px;">০ জন</div>
-                    </div>
-                    <div class="stat-banner-box">
-                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_ref_earn">রেফারেল আয়</div>
-                        <div id="home-ref-earnings" style="font-size: 15px; font-weight: 800; color: #ffaa00; margin-top:2px;">৳ ০.০০</div>
-                    </div>
-                </div>
-
-                <button onclick="shareReferralLink()" class="btn-banner-action btn-shimmer" style="margin-top: 10px; background: linear-gradient(135deg, #00f2fe 0%, #2563eb 100%); color: white;" data-i18n="share_tg_btn">
-                    ✈️ টেলিগ্রামে শেয়ার করুন
+                <button id="spin-btn" onclick="spinLuckyWheel()" class="btn-banner-action btn-shimmer" style="background: linear-gradient(135deg, #00f2fe 0%, #a855f7 100%); color: #fff;" data-i18n="spin_btn_text">
+                    🎡 ঘুরান (SPIN NOW)
                 </button>
             </div>
 
@@ -689,7 +866,6 @@
                     <span id="ad-count" style="color: #00f2fe;">০/২০</span>
                 </div>
 
-                <!-- 🌟 শিমার ইফেক্ট বাটন 🌟 -->
                 <button class="btn-highlevel-watch btn-shimmer" id="watch-ad-btn" onclick="showAdsgramAd()">
                     <span style="font-size: 16px;">▶</span>
                     <span data-i18n="watch_ad_btn">অ্যাড দেখুন (টাকা আয় করুন)</span>
@@ -697,7 +873,50 @@
             </div>
         </section>
 
-        <!-- 📸 ২. সোশ্যাল টাস্ক পেজ -->
+        <!-- 🎁 ২. ব্যানার স্টাইল রেফারেল পেজ (Banner Style Refer Page) -->
+        <section id="refer" class="page">
+            <div class="refer-hero-banner">
+                <span class="banner-badge" style="background: rgba(255, 255, 255, 0.2); color: #00f5a0;" data-i18n="ref_card_badge">🎁 রেফারেল প্রোগ্রাম</span>
+                <h2 style="font-size: 22px; font-weight: 800; margin-top: 6px;" data-i18n="ref_hero_title">বন্ধুদের রেফার করুন, আনলিমিটেড আয় করুন!</h2>
+                <p style="font-size: 12px; color: #e2e8f0; margin-top: 6px; line-height: 1.5;" data-i18n="ref_hero_desc">
+                    আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই তাৎক্ষণিক বোনাস সরাসরি আপনার মূল ওয়ালেটে জমা হবে।
+                </p>
+            </div>
+
+            <div class="banner-card-style referral-banner-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h3 style="font-size: 16px; font-weight: 800;" data-i18n="ref_card_title">আপনার ইনভাইট লিংক</h3>
+                    <span class="banner-badge" style="background: linear-gradient(135deg, #00f5a0 0%, #059669 100%); color: #042f2e; margin-bottom: 0;">
+                        <span data-i18n="ref_bonus_label">বোনাস:</span> ৳<span id="display-ref-bonus">৫</span>
+                    </span>
+                </div>
+
+                <div class="ref-link-box">
+                    <span id="referral-link-display" class="ref-link-text">লিংক লোড হচ্ছে...</span>
+                    <button class="btn-copy-sm" onclick="copyReferralLink()" data-i18n="copy_btn">কপি করুন</button>
+                </div>
+
+                <button onclick="shareReferralLink()" class="btn-banner-action btn-shimmer" style="margin-top: 10px; background: linear-gradient(135deg, #00f2fe 0%, #2563eb 100%); color: white;" data-i18n="share_tg_btn">
+                    ✈️ টেলিগ্রামে শেয়ার করুন
+                </button>
+            </div>
+
+            <div class="banner-card-style" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.85) 100%);">
+                <h4 style="font-size: 15px; font-weight: 800; color: #00f2fe; margin-bottom: 10px;" data-i18n="ref_stat_title">📊 আপনার রেফারেল সামারি</h4>
+                <div class="ref-stats-grid">
+                    <div class="stat-banner-box">
+                        <div style="font-size: 11px; color: #94a3b8;" data-i18n="stat_total_ref">মোট রেফারেল</div>
+                        <div id="home-ref-count" style="font-size: 18px; font-weight: 800; color: #00f5a0; margin-top:2px;">০ জন</div>
+                    </div>
+                    <div class="stat-banner-box">
+                        <div style="font-size: 11px; color: #94a3b8;" data-i18n="stat_ref_earn">রেফারেল আয়</div>
+                        <div id="home-ref-earnings" style="font-size: 18px; font-weight: 800; color: #ffaa00; margin-top:2px;">৳ ০.০০</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 📸 ৩. সোশ্যাল টাস্ক পেজ -->
         <section id="tasks" class="page">
             <div class="banner-card-style task-banner-card">
                 <span class="banner-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;" data-i18n="social_task_badge">📸 সোশ্যাল মিডিয়া প্রুফ টাস্ক</span>
@@ -739,49 +958,9 @@
                     </button>
                 </form>
 
-                <!-- 📜 🚀 নতুন যুক্ত করা হলো: টাস্ক প্রুফ হিস্ট্রি ট্রিপগার বাটন -->
                 <button type="button" class="btn-history-trigger" onclick="openTaskHistory()" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">
                     📜 <span data-i18n="btn_task_history">টাস্ক হিস্ট্রি দেখুন</span>
                 </button>
-            </div>
-        </section>
-
-        <!-- ৩. 👤 প্রোফাইল পেজ -->
-        <section id="profile" class="page">
-            <div class="banner-card-style profile-banner-card">
-                <div class="profile-avatar">👤</div>
-                <h3 id="profile-user-name" style="font-size: 18px; font-weight: 800;">ইউজার নাম</h3>
-                <span class="banner-badge" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: black; margin: 6px auto 0 auto;" data-i18n="vip_badge">⭐ VIP Member</span>
-
-                <div class="ref-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:14px;">
-                    <div class="stat-banner-box">
-                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_balance">ব্যালেন্স</div>
-                        <div id="profile-stat-balance" style="font-size: 14px; font-weight: 800; color: #00f2fe; margin-top:2px;">৳ ০.০০</div>
-                    </div>
-                    <div class="stat-banner-box">
-                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_watched_ads">দেখা অ্যাড</div>
-                        <div id="profile-stat-ads" style="font-size: 14px; font-weight: 800; color: #e100ff; margin-top:2px;">০ টি</div>
-                    </div>
-                    <div class="stat-banner-box">
-                        <div style="font-size: 10px; color: #94a3b8;" data-i18n="stat_total_ref">মোট রেফার</div>
-                        <div id="profile-stat-ref" style="font-size: 14px; font-weight: 800; color: #00f5a0; margin-top:2px;">০ টি</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="banner-card-style">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span style="font-size: 11px; color: #94a3b8;" data-i18n="label_user_id">ইউজার আইডি:</span>
-                    <strong id="profile-user-id" style="color: #00f2fe; font-size: 12px;">#000000</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span style="font-size: 11px; color: #94a3b8;" data-i18n="label_tg_username">টেলিগ্রাম ইউজারনেম:</span>
-                    <strong id="profile-user-username" style="color: #cbd5e1; font-size: 12px;">@user</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 11px; color: #94a3b8;" data-i18n="label_referrer">আমন্ত্রণকারী (Referrer):</span>
-                    <strong id="profile-referred-by" style="color: #00f5a0; font-size: 12px;">Direct Join</strong>
-                </div>
             </div>
         </section>
 
@@ -892,7 +1071,6 @@
                     </button>
                 </form>
 
-                <!-- 📜 উইথড্রয়াল হিস্ট্রি ট্রিপগার বাটন -->
                 <button type="button" class="btn-history-trigger" onclick="openWithdrawHistory()">
                     📜 <span data-i18n="btn_withdraw_history">উইথড্রয়াল হিস্ট্রি দেখুন</span>
                 </button>
@@ -905,13 +1083,13 @@
             <div class="banner-card-style" style="background: linear-gradient(135deg, rgba(3, 105, 161, 0.85) 0%, rgba(2, 132, 199, 0.85) 100%);">
                 <span class="banner-badge" data-i18n="support_tg_badge">✈️ টেলিগ্রাম</span>
                 <h3 style="font-size: 17px; font-weight: 800; margin-top: 2px;" data-i18n="support_tg_title">অফিশিয়াল টেলিগ্রাম চ্যানেল</h3>
-                <a id="telegram-support-link" href="#" target="_blank" class="support-btn" data-i18n="join_tg_btn">টেলিগ্রাম গ্রুপে যুক্ত হন</a>
+                <a id="telegram-support-link" href="#" target="_blank" class="support-btn" onclick="playClickSound()" data-i18n="join_tg_btn">টেলিগ্রাম গ্রুপে যুক্ত হন</a>
             </div>
 
             <div class="banner-card-style" style="background: linear-gradient(135deg, rgba(21, 128, 61, 0.85) 0%, rgba(22, 163, 74, 0.85) 100%);">
                 <span class="banner-badge" data-i18n="support_wa_badge">💬 হোয়াটসঅ্যাপ</span>
                 <h3 style="font-size: 17px; font-weight: 800; margin-top: 2px;" data-i18n="support_wa_title">জরুরি হোয়াটসঅ্যাপ সাপোর্ট</h3>
-                <a id="whatsapp-support-link" href="#" target="_blank" class="support-btn" data-i18n="msg_wa_btn">হোয়াটসঅ্যাপে মেসেজ দিন</a>
+                <a id="whatsapp-support-link" href="#" target="_blank" class="support-btn" onclick="playClickSound()" data-i18n="msg_wa_btn">হোয়াটসঅ্যাপে মেসেজ দিন</a>
             </div>
         </section>
 
@@ -930,7 +1108,7 @@
         </div>
     </div>
 
-    <!-- 📜 ২. 🚀 নতুন যুক্ত করা হলো: সোশ্যাল টাস্ক হিস্ট্রি বটম শিট পপআপ -->
+    <!-- 📜 ২. সোশ্যাল টাস্ক হিস্ট্রি বটম শিট পপআপ -->
     <div id="task-history-modal-overlay" class="history-overlay" onclick="closeTaskHistory()"></div>
     <div id="task-history-bottom-sheet" class="history-bottom-sheet">
         <div class="sheet-handle"></div>
@@ -943,19 +1121,25 @@
         </div>
     </div>
 
-    <!-- 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটম নেভিগেশন বার -->
+    <!-- 🖼️ ৩. ফুলস্ক্রীন ইমেজ লাইটবক্স -->
+    <div id="lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" class="lightbox-img" src="" alt="Proof Screenshot">
+    </div>
+
+    <!-- 🔮 স্লিম গ্লাস বটম নেভিগেশন বার -->
     <div class="navbar">
         <button class="nav-item active" onclick="switchTab('home', 'home', this)">
             <span>🏠</span><span data-i18n="nav_home">হোম</span>
         </button>
+        <button class="nav-item" onclick="switchTab('refer', 'refer', this)">
+            <span>🎁</span><span data-i18n="nav_refer">রেফার</span>
+        </button>
         <button class="nav-item" onclick="switchTab('tasks', 'tasks', this)">
             <span>📋</span><span data-i18n="nav_tasks">টাস্ক</span>
         </button>
-        <button class="nav-item" onclick="switchTab('profile', 'profile', this)">
-            <span>👤</span><span data-i18n="nav_profile">প্রোফাইল</span>
-        </button>
         <button class="nav-item" onclick="switchTab('withdraw', 'withdraw', this)">
-            <span>💸</span><span data-i18n="nav_withdraw">উত্তোলন</span>
+            <span>💸</span><span data-i18n="nav_withdraw">উত্তোলনের</span>
         </button>
         <button class="nav-item" onclick="switchTab('support', 'support', this)">
             <span>🎧</span><span data-i18n="nav_support">সাপোর্ট</span>
@@ -963,7 +1147,65 @@
     </div>
 
     <script>
-        // 🎉 কনফেটি (Confetti) ব্লাস্ট ফংশন
+        // 🎵 সাউন্ড ইফেক্ট ইঞ্জিন (Web Audio API)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playClickSound() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch (e) { console.log(e); }
+        }
+
+        function playCoinSound() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(987.77, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(1318.51, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch (e) { console.log(e); }
+        }
+
+        // 🔔 কাস্টম টোস্ট নোটিফিকেশন ফাংশন
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.style.borderColor = type === 'error' ? '#ef4444' : '#00f2fe';
+            toast.innerText = message;
+
+            container.appendChild(toast);
+
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.notificationOccurred(type === 'error' ? 'error' : 'success');
+            }
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // 🎉 কনফেটি (Confetti) অ্যানিমেশন
         function triggerConfettiAnimation() {
             if (typeof confetti === 'function') {
                 confetti({
@@ -993,14 +1235,15 @@
 
         const i18n = {
             bn: {
-                nav_home: "হোম", nav_tasks: "টাস্ক", nav_profile: "প্রোফাইল", nav_withdraw: "উত্তোলন", nav_support: "সাপোর্ট",
+                nav_home: "হোম", nav_refer: "রেফার", nav_tasks: "টাস্ক", nav_withdraw: "উত্তোলন", nav_support: "সাপোর্ট",
                 header_sub: "প্রতিদিন ১০ মিনিট সময় দিন", welcome_title: "স্বাগতম আমাদের অ্যাপে!", welcome_desc: "আমাদের মিনি অ্যাপে যোগ দেওয়ার জন্য ধন্যবাদ! আপনি পাচ্ছেন",
                 currency_bdt: "টাকা", welcome_suffix: "ওয়েলকাম বোনাস।", claim_bonus_btn: "🎁 বোনাস গ্রহণ করুন", slide1_badge: "🚀 ইনস্ট্যান্ট আর্নিং",
                 slide1_prefix: "প্রতি টা এডের জন্য", slide1_suffix: "পাবেন", slide1_desc: "ভিডিও অ্যাড দেখা শেষ হলেই সাথে সাথে অ্যাকাউন্টে টাকা যুক্ত হবে।",
                 slide2_badge: "📱 ফাস্ট উইথড্র", slide2_title: "রিচার্জ ও USDT (BEP20)", slide2_desc: "মোবাইল রিচার্জ (৫০৳) ও USDT ($1) এ দ্রুত ক্যাশআউট সুবিধা।",
                 slide3_badge: "🎁 রেফার এন্ড আর্ন", slide3_title: "রেফার করে ইনকাম করুন", slide3_desc: "বন্ধুদের শেয়ার করুন এবং প্রতিটি রেফারে পাবেন", slide3_suffix: "বোনাস!",
                 balance_card_title: "💰 মূল ওয়ালেট ব্যালেন্স", status_active: "● এক্টিভ", ref_card_badge: "🎁 রেফারেল প্রোগ্রাম", ref_bonus_label: "বোনাস:",
-                ref_card_title: "বন্ধুদের ইনভাইট করুন", ref_card_desc: "আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই পাবেন আকর্ষণীয় বোনাস!",
+                ref_hero_title: "বন্ধুদের রেফার করুন, আনলিমিটেড আয় করুন!", ref_hero_desc: "আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই তাৎক্ষণিক বোনাস সরাসরি আপনার মূল ওয়ালেটে জমা হবে।", ref_stat_title: "📊 আপনার রেফারেল সামারি",
+                ref_card_title: "আপনার ইনভাইট লিংক", ref_card_desc: "আপনার ইউনিক রেফারেল লিংক দিয়ে বন্ধুদের জয়েন করালেই পাবেন আকর্ষণীয় বোনাস!",
                 generating_link: "লিংক তৈরি হচ্ছে...", copy_btn: "কপি করুন", stat_total_ref: "মোট রেফারেল", stat_ref_earn: "রেফারেল আয়",
                 share_tg_btn: "✈️ টেলিগ্রামে শেয়ার করুন", live_task: "লাইভ টাস্ক", per_ad: "🎬 প্রতি অ্যাড:", watch_earn_title: "📺 ওয়াচ এন্ড আর্ন",
                 watch_earn_desc1: "প্রতিটি ভিডিও অ্যাড দেখার সাথে সাথেই মূল অ্যাকাউন্টে", watch_earn_desc2: "টাকা যোগ হবে।", daily_limit_text: "দৈনিক অগ্রগতির লিমিট",
@@ -1008,9 +1251,7 @@
                 social_task_desc: "আমাদের অ্যাপ সম্পর্কে ফেসবুক, টিকটক বা ইউটিউবে পোস্ট/ভিডিও তৈরি করে লিংক ও স্ক্রিনশট সাবমিট করুন। এডমিন চেক করে আপনাকে বিশেষ বোনাস (৳৫০ - ৳১০০) প্রদান করবে!",
                 label_platform: "প্ল্যাটফর্ম সিলেক্ট করুন:", select_platform_opt: "প্ল্যাটফর্ম নির্বাচন করুন", label_post_link: "পোস্ট/ভিডিও লিংক:",
                 label_screenshot: "স্ক্রিনশট প্রুফ আপলোড করুন:", click_to_upload: "ইমেজ নির্বাচন করতে ক্লিক করুন", submit_proof_btn: "🚀 প্রুফ সাবমিট করুন",
-                vip_badge: "⭐ VIP Member", stat_balance: "ব্যালেন্স", stat_watched_ads: "দেখা অ্যাড", label_user_id: "ইউজার আইডি:",
-                label_tg_username: "টেলিগ্রাম ইউজারনেম:", label_referrer: "আমন্ত্রণকারী (Referrer):", withdraw_badge: "💸 উত্তোলন ও রিচার্জ",
-                withdraw_title: "ইনস্ট্যান্ট ক্যাশআউট", wallet_bal_text: "বর্তমান ওয়ালেট ব্যালেন্স:", btn_recharge_method: "📱 মোবাইল রিচার্জ",
+                withdraw_badge: "💸 উত্তোলন ও রিচার্জ", withdraw_title: "ইনস্ট্যান্ট ক্যাশআউট", wallet_bal_text: "বর্তমান ওয়ালেট ব্যালেন্স:", btn_recharge_method: "📱 মোবাইল রিচার্জ",
                 btn_usdt_method: "🪙 USDT (BEP20)", min_recharge_text: "মোবাইল রিচার্জের সর্বনিম্ন লিমিট:", label_operator: "অপারেটর সিলেক্ট করুন:",
                 select_operator_opt: "অপারেটর নির্বাচন করুন", label_sim_type: "সিম টাইপ (SIM Type):", sim_prepaid: "প্রিপেইড (Prepaid)",
                 sim_postpaid: "পোস্টপেইড (Postpaid)", label_phone: "মোবাইল নম্বর:", label_recharge_amount: "রিচার্জের পরিমাণ (৳):",
@@ -1018,17 +1259,19 @@
                 label_usdt_amount: "উত্তোলনের পরিমাণ ($ USDT):", summary_gross: "উত্তোলনের পরিমাণ:", summary_fee: "১০% সার্ভিস ফি:", summary_receive: "আপনি পাবেন:",
                 btn_submit_usdt: "🪙 USDT উইথড্র রিকোয়েস্ট পাঠান", support_tg_badge: "✈️ টেলিগ্রাম", support_tg_title: "অফিশিয়াল টেলিগ্রাম চ্যানেল", join_tg_btn: "টেলিগ্রাম গ্রুপে যুক্ত হন", support_wa_badge: "💬 হোয়াটসঅ্যাপ", support_wa_title: "জরুরি হোয়াটসঅ্যাপ সাপোর্ট", msg_wa_btn: "হোয়াটসঅ্যাপে মেসেজ দিন",
                 btn_withdraw_history: "উইথড্রয়াল হিস্ট্রি দেখুন", history_title: "📜 উইথড্রয়াল ইতিহাস",
-                btn_task_history: "টাস্ক হিস্ট্রি দেখুন", task_history_title: "📜 সোশ্যাল টাস্ক ইতিহাস"
+                btn_task_history: "টাস্ক হিস্ট্রি দেখুন", task_history_title: "📜 সোশ্যাল টাস্ক ইতিহাস",
+                spin_badge: "🎁 দৈনিক ফ্রী উপহার", spin_title: "🎡 ল্যাকি স্পিন এন্ড উইন", spin_desc: "প্রতিদিন ফ্রী স্পিন ঘুরে ভাগ্য পরীক্ষা করুন এবং রিওয়ার্ড জিতুন!", spin_btn_text: "🎡 ঘুরান (SPIN NOW)"
             },
             en: {
-                nav_home: "Home", nav_tasks: "Tasks", nav_profile: "Profile", nav_withdraw: "Withdraw", nav_support: "Support",
+                nav_home: "Home", nav_refer: "Refer", nav_tasks: "Tasks", nav_withdraw: "Withdraw", nav_support: "Support",
                 header_sub: "Spend 10 minutes daily", welcome_title: "Welcome to Our App!", welcome_desc: "Thank you for joining our Mini App! You get a",
                 currency_bdt: "BDT", welcome_suffix: "welcome bonus.", claim_bonus_btn: "🎁 Claim Bonus", slide1_badge: "🚀 Instant Earning",
                 slide1_prefix: "Per ad watch reward is", slide1_suffix: "BDT", slide1_desc: "Instantly credited to your balance after watching video ads.",
                 slide2_badge: "📱 Fast Withdraw", slide2_title: "Recharge & USDT (BEP20)", slide2_desc: "Fast cashout via Mobile Recharge (50৳) & USDT ($1).",
                 slide3_badge: "🎁 Refer & Earn", slide3_title: "Earn Money by Referring", slide3_desc: "Share with friends and get", slide3_suffix: "bonus per invite!",
                 balance_card_title: "💰 Main Wallet Balance", status_active: "● Active", ref_card_badge: "🎁 Referral Program", ref_bonus_label: "Bonus:",
-                ref_card_title: "Invite Your Friends", ref_card_desc: "Invite friends with your unique referral link and earn exciting bonuses!",
+                ref_hero_title: "Invite Friends & Earn Unlimited!", ref_hero_desc: "Share your unique referral link and get instant cash rewards directly in your wallet.", ref_stat_title: "📊 Your Referral Summary",
+                ref_card_title: "Your Invite Link", ref_card_desc: "Invite friends with your unique referral link and earn exciting bonuses!",
                 generating_link: "Generating link...", copy_btn: "Copy Link", stat_total_ref: "Total Referrals", stat_ref_earn: "Referral Income",
                 share_tg_btn: "✈️ Share on Telegram", live_task: "Live Task", per_ad: "🎬 Per Ad:", watch_earn_title: "📺 Watch & Earn",
                 watch_earn_desc1: "Watching each video ad immediately adds", watch_earn_desc2: "BDT to your wallet.", daily_limit_text: "Daily Progress Limit",
@@ -1036,9 +1279,7 @@
                 social_task_desc: "Create a video/post about our app on Facebook, TikTok, or YouTube, then submit the link & screenshot. Admin will verify and award special bonuses (৳50 - ৳100)!",
                 label_platform: "Select Platform:", select_platform_opt: "Choose Platform", label_post_link: "Post/Video URL:",
                 label_screenshot: "Upload Screenshot Proof:", click_to_upload: "Click here to upload image", submit_proof_btn: "🚀 Submit Proof",
-                vip_badge: "⭐ VIP Member", stat_balance: "Balance", stat_watched_ads: "Ads Watched", label_user_id: "User ID:",
-                label_tg_username: "Telegram Username:", label_referrer: "Referred By:", withdraw_badge: "💸 Cashout & Recharge",
-                withdraw_title: "Instant Cashout", wallet_bal_text: "Current Wallet Balance:", btn_recharge_method: "📱 Mobile Recharge",
+                withdraw_badge: "💸 Cashout & Recharge", withdraw_title: "Instant Cashout", wallet_bal_text: "Current Wallet Balance:", btn_recharge_method: "📱 Mobile Recharge",
                 btn_usdt_method: "🪙 USDT (BEP20)", min_recharge_text: "Min Mobile Recharge limit:", label_operator: "Select Operator:",
                 select_operator_opt: "Choose Operator", label_sim_type: "SIM Type:", sim_prepaid: "Prepaid",
                 sim_postpaid: "Postpaid", label_phone: "Mobile Number:", label_recharge_amount: "Recharge Amount (৳):",
@@ -1046,7 +1287,8 @@
                 label_usdt_amount: "Withdraw Amount ($ USDT):", summary_gross: "Gross Amount:", summary_fee: "10% Service Fee:", summary_receive: "You Receive:",
                 btn_submit_usdt: "🪙 Submit USDT Withdraw", support_tg_badge: "✈️ Telegram", support_tg_title: "Official Telegram Channel", join_tg_btn: "Join Telegram Channel", support_wa_badge: "💬 WhatsApp", support_wa_title: "Urgent WhatsApp Support", msg_wa_btn: "Message on WhatsApp",
                 btn_withdraw_history: "View Withdraw History", history_title: "📜 Withdrawal History",
-                btn_task_history: "View Task History", task_history_title: "📜 Social Task History"
+                btn_task_history: "View Task History", task_history_title: "📜 Social Task History",
+                spin_badge: "🎁 Daily Free Gift", spin_title: "🎡 Lucky Spin & Win", spin_desc: "Spin daily to test your luck and win instant rewards!", spin_btn_text: "🎡 SPIN NOW"
             }
         };
 
@@ -1061,7 +1303,10 @@
             });
         }
 
-        function toggleLanguage() { applyLanguage(currentLang === 'bn' ? 'en' : 'bn'); }
+        function toggleLanguage() { 
+            playClickSound();
+            applyLanguage(currentLang === 'bn' ? 'en' : 'bn'); 
+        }
 
         function startSplashScreen() {
             const progressBar = document.getElementById('splash-progress-bar');
@@ -1083,6 +1328,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
             startSplashScreen();
+            setTimeout(drawWheel, 600);
         });
 
         // Telegram WebApp Setup
@@ -1103,13 +1349,12 @@
         let balance = 0, adsWatchedCount = 0, referralCount = 0, referralEarnings = 0;
         let selectedTaskImageBase64 = "", ADSGRAM_BLOCK_ID = "";
 
-        // 🟢 তাৎক্ষণিক রেফার লিংক জেনারেট
         let myReferralLink = "https://t.me/?startapp=ref_" + userId;
-        document.getElementById('referral-link-display').innerText = myReferralLink;
+        document.querySelectorAll('#referral-link-display').forEach(e => e.innerText = myReferralLink);
 
-        document.getElementById('profile-user-name').innerText = userName;
-        document.getElementById('profile-user-id').innerText = '#' + userId;
-        document.getElementById('profile-user-username').innerText = userUsername;
+        // কমপ্যাক্ট প্রোফাইল সেটিং
+        document.getElementById('top-profile-name').innerText = userName;
+        document.getElementById('top-profile-id').innerText = '#' + userId;
 
         function getReferrerId() {
             let startParam = tg?.initDataUnsafe?.start_param;
@@ -1153,13 +1398,15 @@
                 myReferralLink = `https://t.me/?startapp=ref_${userId}`;
             }
             
-            document.getElementById('referral-link-display').innerText = myReferralLink;
+            document.querySelectorAll('#referral-link-display').forEach(e => e.innerText = myReferralLink);
 
             updateDynamicUI();
         });
 
         // ইউজার ডাটা এবং রেফার অটো-বোনাস লজিক
         db.ref('users/' + userId).once('value', (snapshot) => {
+            const todayStr = new Date().toISOString().split('T')[0];
+
             if (!snapshot.exists()) {
                 balance = welcomeBonus;
                 let newUserObj = {
@@ -1170,7 +1417,8 @@
                     referralCount: 0,
                     referralEarnings: 0,
                     referredBy: (referrerId && referrerId !== userId) ? referrerId : null,
-                    joinedAt: new Date().toISOString()
+                    joinedAt: new Date().toISOString(),
+                    lastAdDate: todayStr
                 };
 
                 db.ref('users/' + userId).set(newUserObj).then(() => {
@@ -1203,22 +1451,26 @@
                     referralCount = uData.referralCount || 0;
                     referralEarnings = uData.referralEarnings || 0;
 
-                    if (uData.referredBy) {
-                        document.getElementById('profile-referred-by').innerText = '#' + uData.referredBy;
+                    // 🕛 দৈনিক অটো অ্যাড রিসেট লজিক
+                    if (uData.lastAdDate !== todayStr) {
+                        adsWatchedCount = 0;
+                        db.ref('users/' + userId).update({
+                            adsWatchedCount: 0,
+                            lastAdDate: todayStr
+                        });
                     }
+
                     renderUI();
                 }
             });
         });
 
         function renderUI() {
+            document.getElementById('top-profile-balance').innerText = `৳ ${balance}.00`;
             document.getElementById('user-balance').innerText = `৳ ${balance}.00`;
-            document.getElementById('profile-stat-balance').innerText = `৳ ${balance}.00`;
             document.getElementById('recharge-page-balance').innerText = `৳ ${balance}.00`;
-            document.getElementById('profile-stat-ads').innerText = `${adsWatchedCount} টি`;
-            document.getElementById('profile-stat-ref').innerText = `${referralCount} জন`;
-            document.getElementById('home-ref-count').innerText = `${referralCount} জন`;
-            document.getElementById('home-ref-earnings').innerText = `৳ ${referralEarnings}.00`;
+            document.querySelectorAll('#home-ref-count').forEach(e => e.innerText = `${referralCount} জন`);
+            document.querySelectorAll('#home-ref-earnings').forEach(e => e.innerText = `৳ ${referralEarnings}.00`);
 
             let percentage = Math.min((adsWatchedCount / targetAds) * 100, 100);
             document.getElementById('ad-count').innerText = `${adsWatchedCount}/${targetAds}`;
@@ -1231,7 +1483,7 @@
             document.querySelectorAll('.banner-ref-bonus').forEach(e => e.innerText = referralBonus);
             document.getElementById('display-reward-amount').innerText = rewardAmount;
             document.getElementById('display-reward-amount2').innerText = rewardAmount;
-            document.getElementById('display-ref-bonus').innerText = referralBonus;
+            document.querySelectorAll('#display-ref-bonus').forEach(e => e.innerText = referralBonus);
             document.querySelectorAll('.display-min-recharge').forEach(e => e.innerText = minRecharge);
             document.getElementById('display-min-usdt').innerText = minUsdt;
         }
@@ -1248,13 +1500,14 @@
             dots[currentSlide].classList.add('active');
         }, 3500);
 
-        // 🎁 ওয়েলকাম বোনাস ক্লেইম করলে কনফেটি এনিমেশন চলবে
         function closeWelcomeModal() { 
+            playCoinSound();
             document.getElementById('welcome-modal').style.display = 'none'; 
             triggerConfettiAnimation();
         }
 
         function switchTab(pageId, titleKey, btnElement) {
+            playClickSound();
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             const headerTitleKey = 'nav_' + titleKey;
@@ -1264,12 +1517,108 @@
         }
 
         function copyReferralLink() {
-            navigator.clipboard.writeText(myReferralLink).then(() => alert('✅ রেফারেল লিংক কপি হয়েছে!\nবন্ধুদের সাথে শেয়ার করুন।'));
+            playClickSound();
+            navigator.clipboard.writeText(myReferralLink).then(() => showToast('✅ রেফারেল লিংক কপি হয়েছে!', 'success'));
         }
 
         function shareReferralLink() {
+            playClickSound();
             const shareText = `🎉 আমাদের আর্নিং অ্যাপে ফ্রিতে ইনকাম করুন! জয়েন করলেই পাবেন ৳${welcomeBonus} টাকা বোনাস।\n\n👇 জয়েন করুন:\n${myReferralLink}`;
             window.open(`https://t.me/share/url?url=${encodeURIComponent(myReferralLink)}&text=${encodeURIComponent(shareText)}`, '_blank');
+        }
+
+        /* 🎡 স্পিন অ্যান্ড উইন লজিক */
+        const spinSegments = [
+            { text: "৳১", val: 1, color: "#7f00ff" },
+            { text: "৳২", val: 2, color: "#00f2fe" },
+            { text: "৳০", val: 0, color: "#ef4444" },
+            { text: "৳৫", val: 5, color: "#00f5a0" },
+            { text: "৳৩", val: 3, color: "#ffaa00" },
+            { text: "৳১০", val: 10, color: "#e100ff" }
+        ];
+
+        let wheelRotation = 0;
+        let isSpinningWheel = false;
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numSegs = spinSegments.length;
+            const anglePerSeg = (2 * Math.PI) / numSegs;
+
+            ctx.clearRect(0, 0, 220, 220);
+
+            spinSegments.forEach((seg, i) => {
+                const startAngle = i * anglePerSeg;
+                const endAngle = startAngle + anglePerSeg;
+
+                ctx.beginPath();
+                ctx.moveTo(110, 110);
+                ctx.arc(110, 110, 110, startAngle, endAngle);
+                ctx.fillStyle = seg.color;
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "rgba(255,255,255,0.2)";
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(110, 110);
+                ctx.rotate(startAngle + anglePerSeg / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 13px 'Hind Siliguri', sans-serif";
+                ctx.fillText(seg.text, 92, 4);
+                ctx.restore();
+            });
+        }
+
+        function spinLuckyWheel() {
+            if (isSpinningWheel) return;
+            playClickSound();
+
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            db.ref(`users/${userId}/lastSpinDate`).once('value', (snap) => {
+                if (snap.val() === todayStr) {
+                    showToast('⚠️ আজ আপনি ফ্রী স্পিন ব্যবহার করেছেন! আগামীকাল আবার চেষ্টা করুন।', 'error');
+                    return;
+                }
+
+                isSpinningWheel = true;
+                document.getElementById('spin-btn').disabled = true;
+
+                const winIndex = Math.floor(Math.random() * spinSegments.length);
+                const winningSeg = spinSegments[winIndex];
+
+                const segAngle = 360 / spinSegments.length;
+                const targetAngle = 360 - (winIndex * segAngle) - (segAngle / 2) - 90;
+                const totalRotations = (360 * 5) + targetAngle;
+
+                wheelRotation += totalRotations;
+                const canvas = document.getElementById('wheelCanvas');
+                canvas.style.transform = `rotate(${wheelRotation}deg)`;
+
+                setTimeout(() => {
+                    isSpinningWheel = false;
+                    document.getElementById('spin-btn').disabled = false;
+
+                    if (winningSeg.val > 0) {
+                        balance += winningSeg.val;
+                        db.ref('users/' + userId).update({ 
+                            balance: balance,
+                            lastSpinDate: todayStr
+                        });
+                        renderUI();
+                        playCoinSound();
+                        triggerConfettiAnimation();
+                        showToast(`🎉 অভিনন্দন! আপনি ৳${winningSeg.val} বিজয়ী হয়েছেন!`, 'success');
+                    } else {
+                        db.ref('users/' + userId).update({ lastSpinDate: todayStr });
+                        showToast('😅 ভাগ্য সহায় হয়নি! আবার আগামীকাল চেষ্টা করুন।', 'error');
+                    }
+                }, 4000);
+            });
         }
 
         function previewTaskImage(event) {
@@ -1300,15 +1649,17 @@
 
         function handleTaskSubmit(event) {
             event.preventDefault();
+            playClickSound();
             const platform = document.getElementById('task-platform').value;
             const postLink = document.getElementById('task-link').value.trim();
 
-            if (!selectedTaskImageBase64) return alert('⚠️ স্ক্রিনশট আপলোড করুন!');
+            if (!selectedTaskImageBase64) return showToast('⚠️ স্ক্রিনশট আপলোড করুন!', 'error');
 
             db.ref('task_proofs').push({
                 userId: userId, userName: userName, userUsername: userUsername, platform: platform, postLink: postLink, screenshot: selectedTaskImageBase64, status: 'Pending', timestamp: new Date().toISOString()
             }).then(() => {
-                alert('🎉 প্রুফ জমা হয়েছে!');
+                playCoinSound();
+                showToast('🎉 প্রুফ সফলভাবে জমা হয়েছে!', 'success');
                 event.target.reset();
                 selectedTaskImageBase64 = "";
                 document.getElementById('upload-placeholder').style.display = 'block';
@@ -1316,20 +1667,22 @@
             });
         }
 
-        // 🎬 অ্যাড দেখা শেষ হলে কনফেটি চলবে
         function showAdsgramAd() {
-            if (typeof Adsgram === 'undefined' || !ADSGRAM_BLOCK_ID) return alert('⚠️ বিজ্ঞাপণ লোড করা সম্ভব হয়নি!');
+            playClickSound();
+            if (typeof Adsgram === 'undefined' || !ADSGRAM_BLOCK_ID) return showToast('⚠️ বিজ্ঞাপণ লোড করা সম্ভব হয়নি!', 'error');
             Adsgram.init({ blockId: ADSGRAM_BLOCK_ID }).show().then(() => {
                 adsWatchedCount++;
                 balance += rewardAmount;
                 db.ref('users/' + userId).update({ balance: balance, adsWatchedCount: adsWatchedCount });
                 renderUI();
-                triggerConfettiAnimation(); // 🚀 কনফেটি বিস্ফোরণ
-                alert(`🎉 ৳${rewardAmount} যোগ হয়েছে!`);
-            }).catch(() => alert('⚠️ বিজ্ঞাপণ সম্পূর্ণ দেখা হয়নি!'));
+                playCoinSound();
+                triggerConfettiAnimation();
+                showToast(`🎉 ৳${rewardAmount} মূল অ্যাকাউন্টে যোগ হয়েছে!`, 'success');
+            }).catch(() => showToast('⚠️ বিজ্ঞাপণ সম্পূর্ণ দেখা হয়নি!', 'error'));
         }
 
         function switchWithdrawMethod(method) {
+            playClickSound();
             document.getElementById('form-recharge').style.display = method === 'recharge' ? 'block' : 'none';
             document.getElementById('form-usdt').style.display = method === 'usdt' ? 'block' : 'none';
             document.getElementById('btn-method-recharge').classList.toggle('active', method === 'recharge');
@@ -1338,8 +1691,9 @@
 
         function handleRechargeSubmit(event) {
             event.preventDefault();
+            playClickSound();
             const amount = parseInt(document.getElementById('recharge-amount').value);
-            if (amount < minRecharge || amount > balance) return alert('⚠️ অপর্যাপ্ত ব্যালেন্স বা কম অ্যামাউন্ট!');
+            if (amount < minRecharge || amount > balance) return showToast('⚠️ অপর্যাপ্ত ব্যালেন্স বা কম অ্যামাউন্ট!', 'error');
 
             balance -= amount;
             renderUI();
@@ -1347,7 +1701,7 @@
             db.ref('withdrawals').push({
                 userId: userId, userName: userName, userUsername: userUsername, method: 'Mobile Recharge', operator: document.getElementById('recharge-operator').value, simType: document.getElementById('recharge-sim-type').value, phone: document.getElementById('recharge-phone').value, amount: amount, status: 'Pending', timestamp: new Date().toISOString()
             });
-            alert('⚡ রিকোয়েস্ট জমা হয়েছে!');
+            showToast('⚡ রিচার্জ রিকোয়েস্ট জমা হয়েছে!', 'success');
             event.target.reset();
         }
 
@@ -1369,11 +1723,12 @@
 
         function handleUsdtSubmit(event) {
             event.preventDefault();
+            playClickSound();
             const usdtAddress = document.getElementById('usdt-address').value.trim();
             const amountUsd = parseFloat(document.getElementById('usdt-amount').value);
             const totalBdtNeeded = amountUsd * usdtExchangeRate;
 
-            if (amountUsd < minUsdt || totalBdtNeeded > balance) return alert('⚠️ অপর্যাপ্ত ব্যালেন্স!');
+            if (amountUsd < minUsdt || totalBdtNeeded > balance) return showToast('⚠️ অপর্যাপ্ত ব্যালেন্স!', 'error');
 
             balance -= totalBdtNeeded;
             renderUI();
@@ -1381,13 +1736,14 @@
             db.ref('withdrawals').push({
                 userId: userId, userName: userName, userUsername: userUsername, method: 'USDT (BEP20)', usdtAddress: usdtAddress, requestedUsd: amountUsd, netUsdToReceive: amountUsd - (amountUsd * (usdtFeePercent / 100)), bdtDeducted: totalBdtNeeded, status: 'Pending', timestamp: new Date().toISOString()
             });
-            alert('🪙 উইথড্র রিকোয়েস্ট জমা হয়েছে!');
+            showToast('🪙 USDT উইথড্র রিকোয়েস্ট জমা হয়েছে!', 'success');
             event.target.reset();
             document.getElementById('usdt-fee-summary').style.display = 'none';
         }
 
         /* 📜 ১. উইথড্রয়াল হিস্ট্রি লজিক */
         function openWithdrawHistory() {
+            playClickSound();
             const overlay = document.getElementById('history-modal-overlay');
             const sheet = document.getElementById('history-bottom-sheet');
             
@@ -1401,6 +1757,7 @@
         }
 
         function closeWithdrawHistory() {
+            playClickSound();
             const overlay = document.getElementById('history-modal-overlay');
             const sheet = document.getElementById('history-bottom-sheet');
             
@@ -1465,8 +1822,9 @@
             });
         }
 
-        /* 📜 🚀 ২. নতুন যুক্ত করা হলো: সোশ্যাল টাস্ক প্রুফ হিস্ট্রি লজিক */
+        /* 📜 ২. সোশ্যাল টাস্ক প্রুফ হিস্ট্রি লজিক */
         function openTaskHistory() {
+            playClickSound();
             const overlay = document.getElementById('task-history-modal-overlay');
             const sheet = document.getElementById('task-history-bottom-sheet');
             
@@ -1480,6 +1838,7 @@
         }
 
         function closeTaskHistory() {
+            playClickSound();
             const overlay = document.getElementById('task-history-modal-overlay');
             const sheet = document.getElementById('task-history-bottom-sheet');
             
@@ -1527,8 +1886,9 @@
                                 </div>
                                 <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">${dateStr}</div>
                             </div>
-                            <div style="text-align: right; flex-shrink: 0;">
+                            <div style="text-align: right; flex-shrink: 0; display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
                                 <span class="history-status-badge ${statusClass}">${statusText}</span>
+                                ${item.screenshot ? `<button onclick="openLightbox('${item.screenshot}')" style="background:rgba(0,242,254,0.15); border:1px solid #00f2fe; color:#00f2fe; border-radius:8px; padding:2px 8px; font-size:10px; font-weight:700; cursor:pointer;">📸 ইমেজ দেখুন</button>` : ''}
                             </div>
                         </div>
                     `;
@@ -1537,6 +1897,17 @@
                 listContainer.innerHTML = itemsHTML;
             });
         }
+
+        /* 🖼️ ৩. লাইটবক্স ফাংশনালিটি */
+        function openLightbox(imgSrc) {
+            playClickSound();
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox-modal').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').style.display = 'none';
+        }
     </script>
 </body>
-</html>
+    </html>
