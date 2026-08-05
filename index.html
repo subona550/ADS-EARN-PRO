@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ads Earning Mini App</title>
+    <title>AdsEarn Pro</title>
 
     <!-- Preconnect for Fast Resource Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,9 @@
     
     <!-- Adsgram SDK -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+    <!-- Canvas Confetti SDK (নতুন যুক্ত করা হয়েছে) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -222,13 +225,42 @@
         .highlevel-progress-bg { background: rgba(0, 0, 0, 0.4); border-radius: 16px; height: 13px; width: 100%; margin: 12px 0 6px 0; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5px; }
         .highlevel-progress-bar { background: linear-gradient(90deg, #00f2fe 0%, #a855f7 50%, #e100ff 100%); height: 100%; width: 0%; border-radius: 16px; transition: width 0.5s ease; box-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
 
+        /* ✨ ✨ ✨ নতুন শিমার & নিয়ন গ্লো অ্যানিমেশন স্টাইল ✨ ✨ ✨ */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden !important;
+        }
+        .btn-shimmer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                60deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.35) 50%,
+                transparent 70%
+            );
+            transform: rotate(25deg) translateX(-150%);
+            animation: shimmerEffect 3s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes shimmerEffect {
+            0% { transform: rotate(25deg) translateX(-150%); }
+            100% { transform: rotate(25deg) translateX(150%); }
+        }
+
         .btn-highlevel-watch {
             background: linear-gradient(135deg, #7f00ff 0%, #e100ff 100%);
             color: white; border: none; padding: 15px; width: 100%; border-radius: 16px; font-size: 15px; font-weight: 800; cursor: pointer;
-            box-shadow: 0 6px 20px rgba(225, 0, 255, 0.35); display: flex; align-items: center; justify-content: center; gap: 6px;
+            box-shadow: 0 0 20px rgba(225, 0, 255, 0.5), inset 0 1px 1px rgba(255,255,255,0.4); 
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: all 0.3s ease;
         }
         .btn-highlevel-watch:active { transform: scale(0.97); }
-        .btn-highlevel-watch:disabled { background: #334155; opacity: 0.6; cursor: not-allowed; }
+        .btn-highlevel-watch:disabled { background: #334155; opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
         /* 🎁 রেফারেল কার্ড */
         .referral-banner-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.85) 0%, rgba(6, 95, 70, 0.85) 100%); border: 1px solid rgba(0, 245, 160, 0.3); }
@@ -300,7 +332,7 @@
         .btn-banner-action {
             background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%);
             color: #042f2e; border: none; padding: 14px; width: 100%; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; 
-            box-shadow: 0 6px 20px rgba(0, 245, 160, 0.3); transition: transform 0.2s;
+            box-shadow: 0 0 18px rgba(0, 245, 160, 0.4); transition: transform 0.2s;
         }
         .btn-banner-action:active { transform: scale(0.97); }
 
@@ -310,7 +342,7 @@
         .page.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটm নেভিগেশন বার (Sleek Compact Navigation Bar) */
+        /* 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটম নেভিগেশন বার */
         .navbar { 
             position: fixed; 
             bottom: 10px; 
@@ -325,8 +357,8 @@
             justify-content: space-evenly; 
             align-items: center;
             border: 1px solid rgba(255, 255, 255, 0.12); 
-            padding: 4px 2px; 
-            border-radius: 18px;
+            padding: 6px 4px; 
+            border-radius: 20px;
             z-index: 999;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
@@ -334,42 +366,49 @@
             border: none; 
             background: none; 
             color: var(--text-muted); 
-            font-weight: 700; 
-            font-size: 8.5px; /* 👈 টেক্সট সাইজ ছোট করা হয়েছে */
-            letter-spacing: 0.2px;
             cursor: pointer; 
             text-align: center; 
             flex: 1; 
             transition: all 0.2s ease; 
             position: relative; 
             border-radius: 12px; 
-            padding: 2px 0;
+            padding: 3px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-        .nav-item span { 
-            font-size: 15px; /* 👈 আইকন সাইজ ছোট করা হয়েছে */
+        .nav-item span:first-child { 
+            font-size: 16px; 
             display: block; 
-            margin-bottom: 1px; 
+            margin-bottom: 2px; 
             transition: transform 0.2s ease; 
+        }
+        .nav-item span:last-child { 
+            font-size: 8px; 
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            line-height: 1;
+            transition: color 0.2s ease;
         }
         .nav-item.active { 
             color: #00f2fe; 
         }
-        .nav-item.active span { 
-            transform: translateY(-1px) scale(1.06); 
+        .nav-item.active span:first-child { 
+            transform: translateY(-1px) scale(1.08); 
             filter: drop-shadow(0 0 5px #00f2fe); 
+        }
+        .nav-item.active span:last-child {
+            font-weight: 700;
         }
         .nav-item.active::after {
             content: ''; 
             position: absolute; 
-            bottom: -2px; 
+            bottom: -3px; 
             left: 50%; 
             transform: translateX(-50%);
             width: 8px; 
-            height: 2px; 
+            height: 2.5px; 
             background: #00f2fe; 
             border-radius: 10px; 
             box-shadow: 0 0 6px #00f2fe;
@@ -382,11 +421,144 @@
             padding: 24px 20px; border-radius: 24px; text-align: center; width: 88%; max-width: 320px; 
             border: 1px solid rgba(0, 242, 254, 0.3); color: white;
         }
+
+        /* 📜 🚀 উইথড্রয়াল ও টাস্ক হিস্ট্রি বটম শিট পপআপ স্টাইল */
+        .history-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 9, 19, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .history-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .history-bottom-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            max-height: 80vh;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(7, 9, 19, 0.98));
+            border-top: 1px solid rgba(0, 242, 254, 0.35);
+            border-radius: 28px 28px 0 0;
+            padding: 20px 16px 28px 16px;
+            z-index: 2001;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+            transition: bottom 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .history-bottom-sheet.active {
+            bottom: 0;
+        }
+
+        .sheet-handle {
+            width: 42px;
+            height: 4.5px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            margin: 0 auto 16px auto;
+        }
+
+        .sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .sheet-header h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #00f2fe;
+        }
+        .sheet-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 📜 স্কলেবল লিস্ট কন্টেইনার */
+        .history-scroll-list {
+            max-height: 58vh;
+            overflow-y: auto;
+            padding-right: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .history-scroll-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-scroll-list::-webkit-scrollbar-thumb {
+            background: rgba(0, 242, 254, 0.3);
+            border-radius: 10px;
+        }
+
+        .history-item-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-status-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .status-approved { background: rgba(0, 245, 160, 0.15); color: #00f5a0; border: 1px solid rgba(0, 245, 160, 0.3); }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .btn-history-trigger {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px dashed rgba(0, 242, 254, 0.4);
+            color: #00f2fe;
+            padding: 10px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-history-trigger:active { transform: scale(0.98); background: rgba(0, 242, 254, 0.15); }
     </style>
 </head>
 <body>
 
-    <!-- 🚀 ১. হাই-টেক ফিউচারিস্টিক স্প্ল্যাশ স্ক্রিন -->
+    <!-- 🚀 ১. স্প্ল্যাশ স্ক্রিন -->
     <div id="splash-screen">
         <div class="splash-core">
             <div class="splash-ring"></div>
@@ -407,11 +579,11 @@
             <p style="color: #cbd5e1; margin-bottom: 16px; font-size: 12px; line-height: 1.5;">
                 <span data-i18n="welcome_desc">আমাদের মিনি অ্যাপে যোগ দেওয়ার জন্য ধন্যবাদ! আপনি পাচ্ছেন</span> <strong id="welcome-bonus-modal" class="text-gold">১০</strong> <span data-i18n="currency_bdt">টাকা</span> <span data-i18n="welcome_suffix">ওয়েলকাম বোনাস।</span>
             </p>
-            <button class="btn-banner-action" onclick="closeWelcomeModal()" data-i18n="claim_bonus_btn">🎁 বোনাস গ্রহণ করুন</button>
+            <button class="btn-banner-action btn-shimmer" onclick="closeWelcomeModal()" data-i18n="claim_bonus_btn">🎁 বোনাস গ্রহণ করুন</button>
         </div>
     </div>
 
-    <!-- হেডার (🌐 EN / BN ল্যাঙ্গুয়েজ টগল) -->
+    <!-- হেডার -->
     <div class="header">
         <div style="width: 50px;"></div>
         <div class="header-content">
@@ -489,7 +661,7 @@
                     </div>
                 </div>
 
-                <button onclick="shareReferralLink()" class="btn-banner-action" style="margin-top: 10px; background: linear-gradient(135deg, #00f2fe 0%, #2563eb 100%); color: white;" data-i18n="share_tg_btn">
+                <button onclick="shareReferralLink()" class="btn-banner-action btn-shimmer" style="margin-top: 10px; background: linear-gradient(135deg, #00f2fe 0%, #2563eb 100%); color: white;" data-i18n="share_tg_btn">
                     ✈️ টেলিগ্রামে শেয়ার করুন
                 </button>
             </div>
@@ -517,7 +689,8 @@
                     <span id="ad-count" style="color: #00f2fe;">০/২০</span>
                 </div>
 
-                <button class="btn-highlevel-watch" id="watch-ad-btn" onclick="showAdsgramAd()">
+                <!-- 🌟 শিমার ইফেক্ট বাটন 🌟 -->
+                <button class="btn-highlevel-watch btn-shimmer" id="watch-ad-btn" onclick="showAdsgramAd()">
                     <span style="font-size: 16px;">▶</span>
                     <span data-i18n="watch_ad_btn">অ্যাড দেখুন (টাকা আয় করুন)</span>
                 </button>
@@ -561,10 +734,15 @@
                         <input type="file" id="task-screenshot-file" accept="image/*" style="display: none;" onchange="previewTaskImage(event)" required>
                     </div>
 
-                    <button type="submit" id="btn-submit-task" class="btn-banner-action" style="background: linear-gradient(135deg, #a855f7 0%, #e100ff 100%); color: white;" data-i18n="submit_proof_btn">
+                    <button type="submit" id="btn-submit-task" class="btn-banner-action btn-shimmer" style="background: linear-gradient(135deg, #a855f7 0%, #e100ff 100%); color: white;" data-i18n="submit_proof_btn">
                         🚀 প্রুফ সাবমিট করুন
                     </button>
                 </form>
+
+                <!-- 📜 🚀 নতুন যুক্ত করা হলো: টাস্ক প্রুফ হিস্ট্রি ট্রিপগার বাটন -->
+                <button type="button" class="btn-history-trigger" onclick="openTaskHistory()" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">
+                    📜 <span data-i18n="btn_task_history">টাস্ক হিস্ট্রি দেখুন</span>
+                </button>
             </div>
         </section>
 
@@ -573,7 +751,7 @@
             <div class="banner-card-style profile-banner-card">
                 <div class="profile-avatar">👤</div>
                 <h3 id="profile-user-name" style="font-size: 18px; font-weight: 800;">ইউজার নাম</h3>
-                <span class="banner-badge" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: black; margin: 6px auto 0 auto;" data-i18n="vip_badge">⭐ Member</span>
+                <span class="banner-badge" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: black; margin: 6px auto 0 auto;" data-i18n="vip_badge">⭐ VIP Member</span>
 
                 <div class="ref-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:14px;">
                     <div class="stat-banner-box">
@@ -671,7 +849,7 @@
                         <input type="number" id="recharge-amount" placeholder="সর্বনিম্ন ৫০ টাকা" min="50" required>
                     </div>
 
-                    <button type="submit" class="btn-banner-action" data-i18n="btn_submit_recharge">⚡ রিচার্জ রিকোয়েস্ট পাঠান</button>
+                    <button type="submit" class="btn-banner-action btn-shimmer" data-i18n="btn_submit_recharge">⚡ রিচার্জ রিকোয়েস্ট পাঠান</button>
                 </form>
 
                 <!-- 🪙 ফর্ম ২: USDT -->
@@ -709,10 +887,15 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-banner-action" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: #000;" data-i18n="btn_submit_usdt">
+                    <button type="submit" class="btn-banner-action btn-shimmer" style="background: linear-gradient(135deg, #ffaa00 0%, #d97706 100%); color: #000;" data-i18n="btn_submit_usdt">
                         🪙 USDT উইথড্র রিকোয়েস্ট পাঠান
                     </button>
                 </form>
+
+                <!-- 📜 উইথড্রয়াল হিস্ট্রি ট্রিপগার বাটন -->
+                <button type="button" class="btn-history-trigger" onclick="openWithdrawHistory()">
+                    📜 <span data-i18n="btn_withdraw_history">উইথড্রয়াল হিস্ট্রি দেখুন</span>
+                </button>
 
             </div>
         </section>
@@ -732,6 +915,32 @@
             </div>
         </section>
 
+    </div>
+
+    <!-- 📜 ১. উইথড্রয়াল হিস্ট্রি বটম শিট পপআপ -->
+    <div id="history-modal-overlay" class="history-overlay" onclick="closeWithdrawHistory()"></div>
+    <div id="history-bottom-sheet" class="history-bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <h3 data-i18n="history_title">📜 উইথড্রয়াল ইতিহাস</h3>
+            <button class="sheet-close-btn" onclick="closeWithdrawHistory()">✕</button>
+        </div>
+        <div id="history-scroll-list" class="history-scroll-list">
+            <div style="text-align: center; color: #94a3b8; font-size: 12px; padding: 20px;">ডাটা লোড হচ্ছে...</div>
+        </div>
+    </div>
+
+    <!-- 📜 ২. 🚀 নতুন যুক্ত করা হলো: সোশ্যাল টাস্ক হিস্ট্রি বটম শিট পপআপ -->
+    <div id="task-history-modal-overlay" class="history-overlay" onclick="closeTaskHistory()"></div>
+    <div id="task-history-bottom-sheet" class="history-bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <h3 style="color: #c084fc;" data-i18n="task_history_title">📜 সোশ্যাল টাস্ক ইতিহাস</h3>
+            <button class="sheet-close-btn" onclick="closeTaskHistory()">✕</button>
+        </div>
+        <div id="task-history-scroll-list" class="history-scroll-list">
+            <div style="text-align: center; color: #94a3b8; font-size: 12px; padding: 20px;">ডাটা লোড হচ্ছে...</div>
+        </div>
     </div>
 
     <!-- 🔮 স্লিম, ছোট ও সুদৃশ্য গ্লাস বটম নেভিগেশন বার -->
@@ -754,6 +963,18 @@
     </div>
 
     <script>
+        // 🎉 কনফেটি (Confetti) ব্লাস্ট ফংশন
+        function triggerConfettiAnimation() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.65 },
+                    zIndex: 999999
+                });
+            }
+        }
+
         // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBR9cx11EjwDzoCshY_8_j-pBix_brYA50",
@@ -795,7 +1016,9 @@
                 sim_postpaid: "পোস্টপেইড (Postpaid)", label_phone: "মোবাইল নম্বর:", label_recharge_amount: "রিচার্জের পরিমাণ (৳):",
                 btn_submit_recharge: "⚡ রিচার্জ রিকোয়েস্ট পাঠান", min_usdt_text: "USDT উত্তোলনের সর্বনিম্ন লিমিট:", label_usdt_address: "USDT BEP-20 ওয়ালেট অ্যাড্রেস:",
                 label_usdt_amount: "উত্তোলনের পরিমাণ ($ USDT):", summary_gross: "উত্তোলনের পরিমাণ:", summary_fee: "১০% সার্ভিস ফি:", summary_receive: "আপনি পাবেন:",
-                btn_submit_usdt: "🪙 USDT উইথড্র রিকোয়েস্ট পাঠান", support_tg_badge: "✈️ টেলিগ্রাম", support_tg_title: "অফিশিয়াল টেলিগ্রাম চ্যানেল", join_tg_btn: "টেলিগ্রাম গ্রুপে যুক্ত হন", support_wa_badge: "💬 হোয়াটসঅ্যাপ", support_wa_title: "জরুরি হোয়াটসঅ্যাপ সাপোর্ট", msg_wa_btn: "হোয়াটসঅ্যাপে মেসেজ দিন"
+                btn_submit_usdt: "🪙 USDT উইথড্র রিকোয়েস্ট পাঠান", support_tg_badge: "✈️ টেলিগ্রাম", support_tg_title: "অফিশিয়াল টেলিগ্রাম চ্যানেল", join_tg_btn: "টেলিগ্রাম গ্রুপে যুক্ত হন", support_wa_badge: "💬 হোয়াটসঅ্যাপ", support_wa_title: "জরুরি হোয়াটসঅ্যাপ সাপোর্ট", msg_wa_btn: "হোয়াটসঅ্যাপে মেসেজ দিন",
+                btn_withdraw_history: "উইথড্রয়াল হিস্ট্রি দেখুন", history_title: "📜 উইথড্রয়াল ইতিহাস",
+                btn_task_history: "টাস্ক হিস্ট্রি দেখুন", task_history_title: "📜 সোশ্যাল টাস্ক ইতিহাস"
             },
             en: {
                 nav_home: "Home", nav_tasks: "Tasks", nav_profile: "Profile", nav_withdraw: "Withdraw", nav_support: "Support",
@@ -821,7 +1044,9 @@
                 sim_postpaid: "Postpaid", label_phone: "Mobile Number:", label_recharge_amount: "Recharge Amount (৳):",
                 btn_submit_recharge: "⚡ Send Recharge Request", min_usdt_text: "Min USDT withdraw limit:", label_usdt_address: "USDT BEP-20 Wallet Address:",
                 label_usdt_amount: "Withdraw Amount ($ USDT):", summary_gross: "Gross Amount:", summary_fee: "10% Service Fee:", summary_receive: "You Receive:",
-                btn_submit_usdt: "🪙 Submit USDT Withdraw", support_tg_badge: "✈️ Telegram", support_tg_title: "Official Telegram Channel", join_tg_btn: "Join Telegram Channel", support_wa_badge: "💬 WhatsApp", support_wa_title: "Urgent WhatsApp Support", msg_wa_btn: "Message on WhatsApp"
+                btn_submit_usdt: "🪙 Submit USDT Withdraw", support_tg_badge: "✈️ Telegram", support_tg_title: "Official Telegram Channel", join_tg_btn: "Join Telegram Channel", support_wa_badge: "💬 WhatsApp", support_wa_title: "Urgent WhatsApp Support", msg_wa_btn: "Message on WhatsApp",
+                btn_withdraw_history: "View Withdraw History", history_title: "📜 Withdrawal History",
+                btn_task_history: "View Task History", task_history_title: "📜 Social Task History"
             }
         };
 
@@ -878,7 +1103,7 @@
         let balance = 0, adsWatchedCount = 0, referralCount = 0, referralEarnings = 0;
         let selectedTaskImageBase64 = "", ADSGRAM_BLOCK_ID = "";
 
-        // 🟢 তাৎক্ষণিক রেফার লিংক জেনারেট (ইনস্ট্যান্ট ফিক্স)
+        // 🟢 তাৎক্ষণিক রেফার লিংক জেনারেট
         let myReferralLink = "https://t.me/?startapp=ref_" + userId;
         document.getElementById('referral-link-display').innerText = myReferralLink;
 
@@ -949,7 +1174,6 @@
                 };
 
                 db.ref('users/' + userId).set(newUserObj).then(() => {
-                    // রেফারকারী ফ্রেন্ডের ওয়ালেটে বোনাস যোগ
                     if (referrerId && referrerId !== userId) {
                         db.ref('users/' + referrerId).once('value', (refSnap) => {
                             if (refSnap.exists()) {
@@ -1024,7 +1248,11 @@
             dots[currentSlide].classList.add('active');
         }, 3500);
 
-        function closeWelcomeModal() { document.getElementById('welcome-modal').style.display = 'none'; }
+        // 🎁 ওয়েলকাম বোনাস ক্লেইম করলে কনফেটি এনিমেশন চলবে
+        function closeWelcomeModal() { 
+            document.getElementById('welcome-modal').style.display = 'none'; 
+            triggerConfettiAnimation();
+        }
 
         function switchTab(pageId, titleKey, btnElement) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -1088,6 +1316,7 @@
             });
         }
 
+        // 🎬 অ্যাড দেখা শেষ হলে কনফেটি চলবে
         function showAdsgramAd() {
             if (typeof Adsgram === 'undefined' || !ADSGRAM_BLOCK_ID) return alert('⚠️ বিজ্ঞাপণ লোড করা সম্ভব হয়নি!');
             Adsgram.init({ blockId: ADSGRAM_BLOCK_ID }).show().then(() => {
@@ -1095,6 +1324,7 @@
                 balance += rewardAmount;
                 db.ref('users/' + userId).update({ balance: balance, adsWatchedCount: adsWatchedCount });
                 renderUI();
+                triggerConfettiAnimation(); // 🚀 কনফেটি বিস্ফোরণ
                 alert(`🎉 ৳${rewardAmount} যোগ হয়েছে!`);
             }).catch(() => alert('⚠️ বিজ্ঞাপণ সম্পূর্ণ দেখা হয়নি!'));
         }
@@ -1154,6 +1384,158 @@
             alert('🪙 উইথড্র রিকোয়েস্ট জমা হয়েছে!');
             event.target.reset();
             document.getElementById('usdt-fee-summary').style.display = 'none';
+        }
+
+        /* 📜 ১. উইথড্রয়াল হিস্ট্রি লজিক */
+        function openWithdrawHistory() {
+            const overlay = document.getElementById('history-modal-overlay');
+            const sheet = document.getElementById('history-bottom-sheet');
+            
+            overlay.style.display = 'block';
+            setTimeout(() => {
+                overlay.classList.add('active');
+                sheet.classList.add('active');
+            }, 10);
+
+            loadWithdrawHistoryData();
+        }
+
+        function closeWithdrawHistory() {
+            const overlay = document.getElementById('history-modal-overlay');
+            const sheet = document.getElementById('history-bottom-sheet');
+            
+            sheet.classList.remove('active');
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 350);
+        }
+
+        function loadWithdrawHistoryData() {
+            const listContainer = document.getElementById('history-scroll-list');
+            listContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 12px; padding: 20px;">ডাটা লোড হচ্ছে...</div>';
+
+            db.ref('withdrawals').orderByChild('userId').equalTo(userId).once('value', (snapshot) => {
+                if (!snapshot.exists()) {
+                    listContainer.innerHTML = `
+                        <div style="text-align: center; color: #cbd5e1; font-size: 13px; padding: 30px 10px;">
+                            <div style="font-size: 36px; margin-bottom: 6px;">📂</div>
+                            কোন উইথড্রয়াল ইতিহাস পাওয়া যায়নি।
+                        </div>`;
+                    return;
+                }
+
+                let itemsHTML = '';
+                let itemsArr = [];
+                snapshot.forEach((childSnap) => { itemsArr.push(childSnap.val()); });
+
+                itemsArr.reverse();
+
+                itemsArr.forEach(item => {
+                    let statusClass = 'status-pending';
+                    let statusText = item.status || 'Pending';
+                    if (statusText.toLowerCase() === 'approved') statusClass = 'status-approved';
+                    if (statusText.toLowerCase() === 'rejected') statusClass = 'status-rejected';
+
+                    let amountDisplay = item.method.includes('USDT') 
+                        ? `$${item.requestedUsd || 0} USDT (৳${item.bdtDeducted || 0})` 
+                        : `৳ ${item.amount || 0}`;
+
+                    let targetDetail = item.phone || item.usdtAddress || '';
+                    let dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+
+                    itemsHTML += `
+                        <div class="history-item-card">
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: #ffffff;">${item.method}</div>
+                                <div style="font-size: 11px; color: #00f2fe; margin-top: 2px;">${targetDetail}</div>
+                                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">${dateStr}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 14px; font-weight: 800; color: #00f5a0;">${amountDisplay}</div>
+                                <div style="margin-top: 4px;">
+                                    <span class="history-status-badge ${statusClass}">${statusText}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                listContainer.innerHTML = itemsHTML;
+            });
+        }
+
+        /* 📜 🚀 ২. নতুন যুক্ত করা হলো: সোশ্যাল টাস্ক প্রুফ হিস্ট্রি লজিক */
+        function openTaskHistory() {
+            const overlay = document.getElementById('task-history-modal-overlay');
+            const sheet = document.getElementById('task-history-bottom-sheet');
+            
+            overlay.style.display = 'block';
+            setTimeout(() => {
+                overlay.classList.add('active');
+                sheet.classList.add('active');
+            }, 10);
+
+            loadTaskHistoryData();
+        }
+
+        function closeTaskHistory() {
+            const overlay = document.getElementById('task-history-modal-overlay');
+            const sheet = document.getElementById('task-history-bottom-sheet');
+            
+            sheet.classList.remove('active');
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 350);
+        }
+
+        function loadTaskHistoryData() {
+            const listContainer = document.getElementById('task-history-scroll-list');
+            listContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 12px; padding: 20px;">ডাটা লোড হচ্ছে...</div>';
+
+            db.ref('task_proofs').orderByChild('userId').equalTo(userId).once('value', (snapshot) => {
+                if (!snapshot.exists()) {
+                    listContainer.innerHTML = `
+                        <div style="text-align: center; color: #cbd5e1; font-size: 13px; padding: 30px 10px;">
+                            <div style="font-size: 36px; margin-bottom: 6px;">📂</div>
+                            কোন টাস্ক জমা দেওয়ার ইতিহাস পাওয়া যায়নি।
+                        </div>`;
+                    return;
+                }
+
+                let itemsHTML = '';
+                let itemsArr = [];
+                snapshot.forEach((childSnap) => { itemsArr.push(childSnap.val()); });
+
+                itemsArr.reverse();
+
+                itemsArr.forEach(item => {
+                    let statusClass = 'status-pending';
+                    let statusText = item.status || 'Pending';
+                    if (statusText.toLowerCase() === 'approved') statusClass = 'status-approved';
+                    if (statusText.toLowerCase() === 'rejected') statusClass = 'status-rejected';
+
+                    let dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+
+                    itemsHTML += `
+                        <div class="history-item-card">
+                            <div style="flex: 1; overflow: hidden; padding-right: 10px;">
+                                <div style="font-size: 13px; font-weight: 800; color: #ffffff;">${item.platform || 'Social Task'}</div>
+                                <div style="font-size: 11px; color: #c084fc; margin-top: 2px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    <a href="${item.postLink || '#'}" target="_blank" style="color: #c084fc; text-decoration: underline;">${item.postLink || 'No Link'}</a>
+                                </div>
+                                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">${dateStr}</div>
+                            </div>
+                            <div style="text-align: right; flex-shrink: 0;">
+                                <span class="history-status-badge ${statusClass}">${statusText}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                listContainer.innerHTML = itemsHTML;
+            });
         }
     </script>
 </body>
